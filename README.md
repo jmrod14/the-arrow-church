@@ -8,9 +8,9 @@ From this directory, run `python -m http.server 8000`, then open `http://localho
 
 ## Before launch
 
-- Confirm the church's location, service schedule, and preferred contact address. The current domain was unreachable during development, so those details were not guessed.
+- Confirm the published service schedule before launch. The location, service times, phone number, livestream, and social links were taken from the church's existing homepage.
 - Replace the editorial stock photography with approved church photos.
-- Add confirmed links for sermons, giving, events, and social profiles as those become available.
+- Add confirmed links for giving and events as those become available.
 - Point DNS to the Lightsail instance and configure HTTPS when deploying. Serve this directory as the web root.
 
-The contact buttons currently open `hello@thearrowchurch.org`; verify that mailbox before publishing.
+Contact buttons use the phone number shown on the existing site. The image in `assets/community-hero.png` was generated for this redesign and should be replaced with approved church photography when available.
