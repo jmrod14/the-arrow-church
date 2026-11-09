@@ -13,8 +13,8 @@ if ($path === 'livestreams') {
     wp_safe_redirect(home_url('/live/'), 301);
     exit;
 }
-$pages = require get_template_directory() . '/pages/data.php';
-$page = $pages[$path] ?? null;
+$arrow_pages = require get_template_directory() . '/pages/data.php';
+$arrow_page = $arrow_pages[$path] ?? null;
 $theme = get_template_directory_uri();
 ?><!doctype html>
 <html <?php language_attributes(); ?>>
@@ -50,12 +50,12 @@ $theme = get_template_directory_uri();
     </div>
 </header>
 <main id="main">
-    <?php if ($page) : ?>
-        <section class="subhero" style="--subhero-image:url('<?php echo esc_url($theme . '/assets/' . $page['image']); ?>')">
+    <?php if ($arrow_page) : ?>
+        <section class="subhero" style="--subhero-image:url('<?php echo esc_url($theme . '/assets/' . $arrow_page['image']); ?>')">
             <div class="container subhero-inner">
-                <p class="overline light"><span class="overline-mark">✳</span> <?php echo esc_html($page['label']); ?></p>
-                <h1><?php echo esc_html($page['title']); ?></h1>
-                <p><?php echo esc_html($page['intro']); ?></p>
+                <p class="overline light"><span class="overline-mark">✳</span> <?php echo esc_html($arrow_page['label']); ?></p>
+                <h1><?php echo esc_html($arrow_page['title']); ?></h1>
+                <p><?php echo esc_html($arrow_page['intro']); ?></p>
             </div>
         </section>
         <?php require get_template_directory() . '/pages/content.php'; ?>

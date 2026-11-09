@@ -5,13 +5,13 @@ return [
         'title' => 'One church. Two languages. One faith.',
         'label' => 'OUR STORY / NUESTRA HISTORIA',
         'intro' => 'A family united in Christ, where lives are transformed and everyone belongs.',
-        'image' => 'arrow-pastors.jpg',
+        'image' => 'arrow-home.jpg',
     ],
     'about/our-team' => [
         'title' => 'Meet the people behind the welcome.',
         'label' => 'OUR TEAM',
         'intro' => 'Get to know the people who help make The Arrow Church a place to belong.',
-        'image' => 'arrow-pastors.jpg',
+        'image' => 'arrow-worship.jpg',
     ],
     'ministries' => [
         'title' => 'Find your people.',

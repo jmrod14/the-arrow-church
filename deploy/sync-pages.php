@@ -1,5 +1,9 @@
 <?php
 /** Provision route records; visible page content remains in this Git theme. */
+if (get_option('blogname') === 'My Blog') {
+    update_option('blogname', 'The Arrow Church');
+    update_option('blogdescription', 'A Place to Belong');
+}
 $routes = [
     'about' => 'About',
     'about/our-team' => 'Our Team',
