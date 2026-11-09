@@ -18,7 +18,10 @@ add_action('init', function () {
 });
 
 function arrow_handle_contact() {
-    $fallback = home_url('/?contact=error#contact');
+    $return_to = isset($_POST['return_to']) && sanitize_key(wp_unslash($_POST['return_to'])) === 'contact' ? '/contact/' : '/';
+    $suffix = $return_to === '/' ? '#contact' : '';
+    $fallback = home_url($return_to . '?contact=error' . $suffix);
+    $success = home_url($return_to . '?contact=sent' . $suffix);
     if (strtoupper($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
         wp_safe_redirect($fallback, 303);
         exit;
@@ -29,7 +32,7 @@ function arrow_handle_contact() {
         exit;
     }
     if (!empty($_POST['website'])) {
-        wp_safe_redirect(home_url('/?contact=sent#contact'), 303);
+        wp_safe_redirect($success, 303);
         exit;
     }
     $name = isset($_POST['name']) ? sanitize_text_field(wp_unslash($_POST['name'])) : '';
@@ -60,8 +63,83 @@ function arrow_handle_contact() {
     wp_mail(get_option('admin_email'), 'New Arrow Church contact message', $body, [
         'Reply-To: ' . $name . ' <' . $email . '>',
     ]);
-    wp_safe_redirect(home_url('/?contact=sent#contact'), 303);
+    wp_safe_redirect($success, 303);
     exit;
 }
 add_action('admin_post_arrow_contact', 'arrow_handle_contact');
 add_action('admin_post_nopriv_arrow_contact', 'arrow_handle_contact');
+
+/** Keep dated event links and calendar subscriptions working after migration. */
+add_action('init', function () {
+    add_rewrite_rule('^events/sunday-worship/([0-9]{4}-[0-9]{2}-[0-9]{2})/?$', 'index.php?pagename=events/sunday-worship&arrow_event_date=$matches[1]', 'top');
+    add_rewrite_rule('^events/sunday-worship/([0-9]{4}-[0-9]{2}-[0-9]{2})\.ics$', 'index.php?arrow_ics_date=$matches[1]', 'top');
+    add_rewrite_rule('^events\.ics$', 'index.php?arrow_calendar_ics=1', 'top');
+    add_rewrite_rule('^collections/ministries/?$', 'index.php?pagename=ministries', 'top');
+});
+add_filter('query_vars', function ($vars) {
+    return array_merge($vars, ['arrow_event_date', 'arrow_ics_date', 'arrow_calendar_ics']);
+});
+
+function arrow_upcoming_sundays($count) {
+    $today = new DateTimeImmutable('today', new DateTimeZone('America/Chicago'));
+    $days_until_sunday = (7 - (int) $today->format('w')) % 7;
+    $first = $today->modify('+' . $days_until_sunday . ' days');
+    $dates = [];
+    for ($i = 0; $i < $count; $i++) {
+        $dates[] = $first->modify('+' . ($i * 7) . ' days');
+    }
+    return $dates;
+}
+
+function arrow_event_date() {
+    $raw = get_query_var('arrow_event_date');
+    if (!$raw && isset($_GET['date'])) {
+        $raw = sanitize_text_field(wp_unslash($_GET['date']));
+    }
+    if (is_string($raw) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $raw)) {
+        $date = DateTimeImmutable::createFromFormat('!Y-m-d', $raw, new DateTimeZone('America/Chicago'));
+        if ($date && $date->format('Y-m-d') === $raw && $date->format('w') === '0') {
+            return $date;
+        }
+    }
+    return arrow_upcoming_sundays(1)[0];
+}
+
+add_action('template_redirect', function () {
+    $event_date = get_query_var('arrow_ics_date');
+    $calendar = get_query_var('arrow_calendar_ics');
+    if (!$event_date && !$calendar) {
+        return;
+    }
+    $tz = new DateTimeZone('America/Chicago');
+    $date = $calendar ? arrow_upcoming_sundays(1)[0] : DateTimeImmutable::createFromFormat('!Y-m-d', $event_date, $tz);
+    if (!$date || $date->format('w') !== '0' || (!$calendar && $date->format('Y-m-d') !== $event_date)) {
+        status_header(404);
+        exit;
+    }
+    $start = $date->setTime(12, 30);
+    $end = $date->setTime(13, 30);
+    $lines = [
+        'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//The Arrow Church//Events//EN',
+        'CALSCALE:GREGORIAN', 'X-WR-CALNAME:The Arrow Church',
+        'BEGIN:VTIMEZONE', 'TZID:America/Chicago',
+        'BEGIN:DAYLIGHT', 'TZOFFSETFROM:-0600', 'TZOFFSETTO:-0500', 'TZNAME:CDT', 'DTSTART:19700308T020000', 'RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU', 'END:DAYLIGHT',
+        'BEGIN:STANDARD', 'TZOFFSETFROM:-0500', 'TZOFFSETTO:-0600', 'TZNAME:CST', 'DTSTART:19701101T020000', 'RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU', 'END:STANDARD',
+        'END:VTIMEZONE', 'BEGIN:VEVENT',
+        'UID:sunday-worship-' . $date->format('Ymd') . '@thearrowchurch.org',
+        'DTSTAMP:' . gmdate('Ymd\THis\Z'),
+        'DTSTART;TZID=America/Chicago:' . $start->format('Ymd\THis'),
+        'DTEND;TZID=America/Chicago:' . $end->format('Ymd\THis'),
+        'SUMMARY:Sunday Worship - The Arrow Church',
+        'DESCRIPTION:Worship with us at The Arrow Church.',
+        'LOCATION:2931 Lucerne Dr\, Janesville\, WI 53545',
+    ];
+    if ($calendar) {
+        $lines[] = 'RRULE:FREQ=WEEKLY;BYDAY=SU';
+    }
+    $lines = array_merge($lines, ['END:VEVENT', 'END:VCALENDAR']);
+    header('Content-Type: text/calendar; charset=utf-8');
+    header('Content-Disposition: attachment; filename="the-arrow-church-events.ics"');
+    echo implode("\r\n", $lines) . "\r\n";
+    exit;
+});

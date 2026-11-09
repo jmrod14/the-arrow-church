@@ -13,10 +13,20 @@ deploy_main() {
     php -l "$stage/functions.php"
     php -l "$stage/front-page.php"
     php -l "$stage/index.php"
+    php -l "$stage/page.php"
+    php -l "$stage/pages/data.php"
+    php -l "$stage/pages/content.php"
+    php -l "$stage/deploy/sync-pages.php"
     [ ! -L "$target" ] || { echo 'Refusing symlinked theme target' >&2; exit 1; }
     mkdir -p "$target"
     rsync -a --delete --exclude '/deploy/' --exclude '/README.md' "$stage/" "$target/"
     chmod -R a+rX "$target"
+    wp eval-file "$stage/deploy/sync-pages.php" --path=/var/www/html
+    wp rewrite structure '/%postname%/' --path=/var/www/html
+    if [ ! -e /var/www/html/.htaccess ]; then
+        cp "$stage/deploy/wordpress.htaccess" /var/www/html/.htaccess
+        chmod 664 /var/www/html/.htaccess
+    fi
     echo "Deployed The Arrow Church theme at $newrev"
     rm -rf "$stage"
     trap - EXIT HUP INT TERM
