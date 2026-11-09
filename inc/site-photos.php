@@ -38,6 +38,30 @@ function arrow_photo_url($file, $slot = '') {
     return get_template_directory_uri() . '/assets/' . $file;
 }
 
+function arrow_photo_display($file, $slot = '') {
+    $settings = get_option('arrow_photo_display', []);
+    if (!is_array($settings)) {
+        $settings = [];
+    }
+    $fallback_y = $slot === 'hero:home' ? 45 : (strpos($slot, 'hero:') === 0 ? 42 : 50);
+    $value = $settings[$slot] ?? $settings['asset:' . $file] ?? [];
+    if (!is_array($value)) {
+        $value = [];
+    }
+    return [
+        'fit' => ($value['fit'] ?? ($file === 'arrow-logo.png' ? 'contain' : 'cover')) === 'contain' ? 'contain' : 'cover',
+        'x' => max(0, min(100, (int) ($value['x'] ?? 50))),
+        'y' => max(0, min(100, (int) ($value['y'] ?? $fallback_y))),
+    ];
+}
+
+function arrow_photo_style($file, $slot = '', $background = false) {
+    $display = arrow_photo_display($file, $slot);
+    $fit = $background ? 'background-size' : 'object-fit';
+    $position = $background ? 'background-position' : 'object-position';
+    return $fit . ':' . $display['fit'] . ';' . $position . ':' . $display['x'] . '% ' . $display['y'] . '%;';
+}
+
 add_action('admin_menu', function () {
     add_menu_page('Site Photos', 'Site Photos', 'manage_options', 'arrow-site-photos', 'arrow_render_photo_admin', 'dashicons-format-gallery', 25);
 });
@@ -47,8 +71,8 @@ add_action('admin_enqueue_scripts', function ($hook) {
         return;
     }
     wp_enqueue_media();
-    wp_enqueue_script('arrow-site-photos', get_template_directory_uri() . '/inc/site-photos.js', [], '1.0', true);
-    wp_enqueue_style('arrow-site-photos', get_template_directory_uri() . '/inc/site-photos.css', [], '1.0');
+    wp_enqueue_script('arrow-site-photos', get_template_directory_uri() . '/inc/site-photos.js', [], '1.1', true);
+    wp_enqueue_style('arrow-site-photos', get_template_directory_uri() . '/inc/site-photos.css', [], '1.1');
 });
 
 function arrow_render_photo_admin() {
@@ -63,7 +87,7 @@ function arrow_render_photo_admin() {
     ?>
     <div class="wrap arrow-photo-admin">
         <h1>Site Photos</h1>
-        <p>Choose photos from the Media Library, then save. Photos already on the site stay in place until you replace them. Page banners can be changed separately.</p>
+        <p>Choose a photo, adjust how it fits, then save. <strong>Show whole image</strong> keeps every edge visible. <strong>Fill frame</strong> looks fuller; use the position controls to choose which part stays in view.</p>
         <?php if (isset($_GET['updated']) && $_GET['updated'] === '1') : ?><div class="notice notice-success is-dismissible"><p>Site photos saved.</p></div><?php endif; ?>
         <form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post">
             <input type="hidden" name="action" value="arrow_save_photos">
@@ -78,12 +102,22 @@ function arrow_render_photo_admin() {
                 }
                 $id = absint($saved[$key] ?? 0);
                 $photo = arrow_photo_url($field[2], $key);
+                $display = arrow_photo_display($field[2], $key);
+                $default = strpos($key, 'asset:') === 0 ? get_template_directory_uri() . '/assets/' . $field[2] : arrow_photo_url($field[2]);
                 ?>
-                <div class="arrow-photo-card" data-default="<?php echo esc_url(get_template_directory_uri() . '/assets/' . $field[2]); ?>">
+                <div class="arrow-photo-card" data-default="<?php echo esc_url($default); ?>">
                     <h3><?php echo esc_html($field[1]); ?></h3>
-                    <img src="<?php echo esc_url($photo); ?>" alt="Preview of <?php echo esc_attr($field[1]); ?>">
+                    <img src="<?php echo esc_url($photo); ?>" alt="Preview of <?php echo esc_attr($field[1]); ?>" style="<?php echo esc_attr(arrow_photo_style($field[2], $key)); ?>">
                     <input type="hidden" name="photos[<?php echo esc_attr($key); ?>]" value="<?php echo esc_attr($id); ?>">
                     <div class="arrow-photo-actions"><button type="button" class="button arrow-choose-photo">Choose photo</button><button type="button" class="button-link arrow-reset-photo" <?php disabled(!$id); ?>>Use original</button></div>
+                    <label class="arrow-fit-label">Display
+                        <select name="display[<?php echo esc_attr($key); ?>][fit]" class="arrow-fit">
+                            <option value="cover" <?php selected($display['fit'], 'cover'); ?>>Fill frame</option>
+                            <option value="contain" <?php selected($display['fit'], 'contain'); ?>>Show whole image</option>
+                        </select>
+                    </label>
+                    <label class="arrow-position-label">Move left / right <input type="range" name="display[<?php echo esc_attr($key); ?>][x]" min="0" max="100" value="<?php echo esc_attr($display['x']); ?>" class="arrow-position-x"></label>
+                    <label class="arrow-position-label">Move up / down <input type="range" name="display[<?php echo esc_attr($key); ?>][y]" min="0" max="100" value="<?php echo esc_attr($display['y']); ?>" class="arrow-position-y"></label>
                 </div>
             <?php endforeach; ?>
             </div>
@@ -107,6 +141,17 @@ add_action('admin_post_arrow_save_photos', function () {
         }
     }
     update_option('arrow_site_photos', $saved, false);
+    $submitted_display = isset($_POST['display']) && is_array($_POST['display']) ? wp_unslash($_POST['display']) : [];
+    $display = [];
+    foreach (arrow_photo_fields() as $key => $field) {
+        $value = isset($submitted_display[$key]) && is_array($submitted_display[$key]) ? $submitted_display[$key] : [];
+        $display[$key] = [
+            'fit' => ($value['fit'] ?? '') === 'contain' ? 'contain' : 'cover',
+            'x' => max(0, min(100, (int) ($value['x'] ?? 50))),
+            'y' => max(0, min(100, (int) ($value['y'] ?? 50))),
+        ];
+    }
+    update_option('arrow_photo_display', $display, false);
     wp_safe_redirect(admin_url('admin.php?page=arrow-site-photos&updated=1'));
     exit;
 });

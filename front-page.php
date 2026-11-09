@@ -8,12 +8,16 @@ if ($markup === false) {
 }
 $markup = str_replace('assets/', $theme_url . '/assets/', $markup);
 foreach (['arrow-home.jpg', 'arrow-worship.jpg', 'arrow-kids.jpg', 'arrow-youth.jpg', 'arrow-young-adults.jpg', 'arrow-prayer.jpg', 'arrow-pastors.jpg', 'arrow-team-rossy.jpg', 'arrow-logo.png'] as $file) {
-    $markup = str_replace($theme_url . '/assets/' . $file, esc_url(arrow_photo_url($file)), $markup);
+    $old_url = $theme_url . '/assets/' . $file;
+    $new_url = esc_url(arrow_photo_url($file));
+    $markup = str_replace('src="' . $old_url . '"', 'src="' . $new_url . '" style="' . esc_attr(arrow_photo_style($file)) . '"', $markup);
+    $markup = str_replace('href="' . $old_url . '"', 'href="' . $new_url . '"', $markup);
 }
 $hero_url = esc_url(arrow_photo_url('arrow-home.jpg', 'hero:home'));
-$markup = str_replace('class="hero-photo"', 'class="hero-photo" style="background-image:url(&quot;' . $hero_url . '&quot;)"', $markup);
+$markup = str_replace('class="hero-photo"', 'class="hero-photo" style="background-image:url(&quot;' . $hero_url . '&quot;);' . esc_attr(arrow_photo_style('arrow-home.jpg', 'hero:home', true)) . '"', $markup);
 $live_url = esc_url(arrow_photo_url('arrow-worship.jpg'));
-$markup = str_replace('class="live-poster"', 'class="live-poster" style="background-image:linear-gradient(90deg,rgba(0,0,0,.78),rgba(0,0,0,.22)),url(&quot;' . $live_url . '&quot;)"', $markup);
+$live_display = arrow_photo_display('arrow-worship.jpg');
+$markup = str_replace('class="live-poster"', 'class="live-poster" style="background-image:linear-gradient(90deg,rgba(0,0,0,.78),rgba(0,0,0,.22)),url(&quot;' . $live_url . '&quot;);background-size:100% 100%,' . esc_attr($live_display['fit']) . ';background-position:center,' . esc_attr($live_display['x'] . '% ' . $live_display['y'] . '%') . '"', $markup);
 $markup = str_replace('href="styles.css"', 'href="' . $theme_url . '/styles.css"', $markup);
 $markup = str_replace('src="script.js"', 'src="' . $theme_url . '/script.js"', $markup);
 $markup = str_replace('action="/wp-admin/admin-post.php"', 'action="' . esc_url(admin_url('admin-post.php')) . '"', $markup);

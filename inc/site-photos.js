@@ -3,6 +3,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const input = card.querySelector('input');
     const preview = card.querySelector('img');
     const reset = card.querySelector('.arrow-reset-photo');
+    const fit = card.querySelector('.arrow-fit');
+    const x = card.querySelector('.arrow-position-x');
+    const y = card.querySelector('.arrow-position-y');
+    const updatePreview = () => {
+      preview.style.objectFit = fit.value;
+      preview.style.objectPosition = `${x.value}% ${y.value}%`;
+    };
+    [fit, x, y].forEach((control) => control.addEventListener('input', updatePreview));
     card.querySelector('.arrow-choose-photo').addEventListener('click', () => {
       const picker = wp.media({ title: 'Choose a site photo', button: { text: 'Use this photo' }, library: { type: 'image' }, multiple: false });
       picker.on('select', () => {

@@ -52,7 +52,8 @@ $theme = get_template_directory_uri();
 </header>
 <main id="main">
     <?php if ($arrow_page) : ?>
-        <section class="subhero" style="--subhero-image:url('<?php echo esc_url(arrow_photo_url($arrow_page['image'], 'hero:' . $path)); ?>')">
+        <?php $position = arrow_photo_display($arrow_page['image'], 'hero:' . $path); ?>
+        <section class="subhero" style="--subhero-image:url('<?php echo esc_url(arrow_photo_url($arrow_page['image'], 'hero:' . $path)); ?>');--subhero-fit:<?php echo esc_attr($position['fit']); ?>;--subhero-position:<?php echo esc_attr($position['x'] . '% ' . $position['y'] . '%'); ?>">
             <div class="container subhero-inner">
                 <p class="overline light"><span class="overline-mark">✳</span> <?php echo esc_html($arrow_page['label']); ?></p>
                 <h1><?php echo esc_html($arrow_page['title']); ?></h1>
@@ -61,7 +62,8 @@ $theme = get_template_directory_uri();
         </section>
         <?php require get_template_directory() . '/pages/content.php'; ?>
     <?php else : ?>
-        <section class="subhero" style="--subhero-image:url('<?php echo esc_url(arrow_photo_url('arrow-home.jpg')); ?>')"><div class="container subhero-inner"><p class="overline light"><span class="overline-mark">✳</span> THE ARROW CHURCH</p><h1><?php the_title(); ?></h1></div></section>
+        <?php $position = arrow_photo_display('arrow-home.jpg'); ?>
+        <section class="subhero" style="--subhero-image:url('<?php echo esc_url(arrow_photo_url('arrow-home.jpg')); ?>');--subhero-fit:<?php echo esc_attr($position['fit']); ?>;--subhero-position:<?php echo esc_attr($position['x'] . '% ' . $position['y'] . '%'); ?>"><div class="container subhero-inner"><p class="overline light"><span class="overline-mark">✳</span> THE ARROW CHURCH</p><h1><?php the_title(); ?></h1></div></section>
         <section class="section"><div class="container article-body"><?php while (have_posts()) : the_post(); the_content(); endwhile; ?></div></section>
     <?php endif; ?>
 </main>

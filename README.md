@@ -4,7 +4,7 @@ A custom WordPress theme for The Arrow Church, with a previewable HTML homepage 
 
 ## Change photos in WordPress
 
-Sign in at `/wp-admin/`, open **Site Photos** in the left menu, choose replacements from the Media Library, and click **Save site photos**. The homepage hero, shared photos, logo, and individual page banners can be changed without editing code. **Use original** restores a photo shipped with the theme. Uploads remain in WordPress when the theme is deployed again from Git. Elementor is not required for photo changes; the page layouts are still maintained in the theme.
+Sign in at `/wp-admin/`, open **Site Photos** in the left menu, choose replacements from the Media Library, adjust how each image fits, and click **Save site photos**. **Show whole image** keeps the entire photo visible; **Fill frame** fills the shape and lets you move the visible portion with the horizontal and vertical sliders. The homepage hero, shared photos, logo, and individual page banners can be changed without editing code. **Use original** restores a photo shipped with the theme. Uploads and display settings remain in WordPress when the theme is deployed again from Git. Elementor is not required for photo changes; the page layouts are still maintained in the theme.
 
 ## Live preview
 
