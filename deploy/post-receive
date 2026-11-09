@@ -16,6 +16,7 @@ deploy_main() {
     [ ! -L "$target" ] || { echo 'Refusing symlinked theme target' >&2; exit 1; }
     mkdir -p "$target"
     rsync -a --delete --exclude '/deploy/' --exclude '/README.md' "$stage/" "$target/"
+    chmod -R a+rX "$target"
     echo "Deployed The Arrow Church theme at $newrev"
     rm -rf "$stage"
     trap - EXIT HUP INT TERM

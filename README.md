@@ -16,4 +16,4 @@ Open `index.html` locally to preview the design. The contact form works after th
 
 ## Git deployment
 
-The repository can push directly to the Lightsail bare Git repository. `deploy/post-receive` validates PHP and synchronizes the theme to `/var/www/html/wp-content/themes/the-arrow-church`. The private SSH key stays outside Git. Activate the theme using WordPress CLI after the first push.
+`deploy/post-receive` validates PHP and synchronizes the theme to `/var/www/html/wp-content/themes/the-arrow-church`. The private SSH key stays outside Git. The theme is already active on the Lightsail WordPress instance. On this Windows workspace, use `deploy/publish.ps1 -KeyPath <private-key-path> -KnownHostsPath <known-hosts-path>` to send the current `main` commit as a Git bundle and deploy it. The instance uses static IP `184.198.12.185`. SSH access is restricted to the approved client IP in the Lightsail firewall.
