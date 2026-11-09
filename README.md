@@ -2,6 +2,10 @@
 
 A custom WordPress theme for The Arrow Church, with a previewable HTML homepage and WordPress subpages. The theme uses the church's own photos and content, includes live and archived video, an events calendar, giving through the church's existing Tithely account, and a WordPress contact form.
 
+## Change photos in WordPress
+
+Sign in at `/wp-admin/`, open **Site Photos** in the left menu, choose replacements from the Media Library, and click **Save site photos**. The homepage hero, shared photos, logo, and individual page banners can be changed without editing code. **Use original** restores a photo shipped with the theme. Uploads remain in WordPress when the theme is deployed again from Git. Elementor is not required for photo changes; the page layouts are still maintained in the theme.
+
 ## Live preview
 
 The Lightsail preview is at https://arrow.184.198.12.185.sslip.io/. The production domain still serves the existing church website. The instance has a static IP and an automatically renewing HTTPS certificate for the preview hostname. Change the WordPress URLs and issue a certificate for `thearrowchurch.org` when DNS is ready to move.

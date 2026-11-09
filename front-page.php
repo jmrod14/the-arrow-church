@@ -7,6 +7,13 @@ if ($markup === false) {
     exit('The homepage template is unavailable.');
 }
 $markup = str_replace('assets/', $theme_url . '/assets/', $markup);
+foreach (['arrow-home.jpg', 'arrow-worship.jpg', 'arrow-kids.jpg', 'arrow-youth.jpg', 'arrow-young-adults.jpg', 'arrow-prayer.jpg', 'arrow-pastors.jpg', 'arrow-team-rossy.jpg', 'arrow-logo.png'] as $file) {
+    $markup = str_replace($theme_url . '/assets/' . $file, esc_url(arrow_photo_url($file)), $markup);
+}
+$hero_url = esc_url(arrow_photo_url('arrow-home.jpg', 'hero:home'));
+$markup = str_replace('class="hero-photo"', 'class="hero-photo" style="background-image:url(&quot;' . $hero_url . '&quot;)"', $markup);
+$live_url = esc_url(arrow_photo_url('arrow-worship.jpg'));
+$markup = str_replace('class="live-poster"', 'class="live-poster" style="background-image:linear-gradient(90deg,rgba(0,0,0,.78),rgba(0,0,0,.22)),url(&quot;' . $live_url . '&quot;)"', $markup);
 $markup = str_replace('href="styles.css"', 'href="' . $theme_url . '/styles.css"', $markup);
 $markup = str_replace('src="script.js"', 'src="' . $theme_url . '/script.js"', $markup);
 $markup = str_replace('action="/wp-admin/admin-post.php"', 'action="' . esc_url(admin_url('admin-post.php')) . '"', $markup);

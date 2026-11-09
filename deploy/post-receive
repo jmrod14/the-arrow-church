@@ -11,6 +11,7 @@ deploy_main() {
     trap 'rm -rf "$stage"' EXIT HUP INT TERM
     git --git-dir="$repository" archive "$newrev" | tar -x -C "$stage"
     php -l "$stage/functions.php"
+    php -l "$stage/inc/site-photos.php"
     php -l "$stage/front-page.php"
     php -l "$stage/index.php"
     php -l "$stage/page.php"

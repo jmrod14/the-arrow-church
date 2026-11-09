@@ -3,8 +3,8 @@
 $url = static function ($route) {
     return esc_url(home_url('/' . trim($route, '/') . '/'));
 };
-$asset = static function ($file) use ($theme) {
-    return esc_url($theme . '/assets/' . $file);
+$asset = static function ($file) {
+    return esc_url(arrow_photo_url($file));
 };
 
 if ($path === 'about') : ?>

@@ -5,6 +5,8 @@ add_action('after_setup_theme', function () {
     add_theme_support('post-thumbnails');
 });
 
+require_once get_template_directory() . '/inc/site-photos.php';
+
 add_action('init', function () {
     register_post_type('arrow_message', [
         'labels' => ['name' => 'Contact Messages', 'singular_name' => 'Contact Message'],
