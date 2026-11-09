@@ -6,7 +6,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $repo = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
-$bundle = Join-Path ([IO.Path]::GetTempPath()) ('the-arrow-church-' + [guid]::NewGuid().ToString('N') + '.bundle')
+$bundle = Join-Path $repo ('.deploy-' + [guid]::NewGuid().ToString('N') + '.bundle')
 $remoteBundle = '/home/admin/repos/the-arrow-church-deploy.bundle'
 
 try {
