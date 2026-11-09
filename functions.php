@@ -74,10 +74,14 @@ add_action('init', function () {
     add_rewrite_rule('^events/sunday-worship/([0-9]{4}-[0-9]{2}-[0-9]{2})/?$', 'index.php?pagename=events/sunday-worship&arrow_event_date=$matches[1]', 'top');
     add_rewrite_rule('^events/sunday-worship/([0-9]{4}-[0-9]{2}-[0-9]{2})\.ics$', 'index.php?arrow_ics_date=$matches[1]', 'top');
     add_rewrite_rule('^events\.ics$', 'index.php?arrow_calendar_ics=1', 'top');
+    add_rewrite_rule('^livestreams/([12])/?$', 'index.php?pagename=live&arrow_stream_id=$matches[1]', 'top');
     add_rewrite_rule('^collections/ministries/?$', 'index.php?pagename=ministries', 'top');
 });
 add_filter('query_vars', function ($vars) {
-    return array_merge($vars, ['arrow_event_date', 'arrow_ics_date', 'arrow_calendar_ics']);
+    return array_merge($vars, ['arrow_event_date', 'arrow_ics_date', 'arrow_calendar_ics', 'arrow_stream_id']);
+});
+add_filter('redirect_canonical', function ($redirect) {
+    return get_query_var('arrow_stream_id') ? false : $redirect;
 });
 
 function arrow_upcoming_sundays($count) {

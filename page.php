@@ -1,6 +1,10 @@
 <?php
 /** Shared layout for the pages mirrored from the church's previous site. */
 $path = trim((string) get_page_uri(get_queried_object_id()), '/');
+$stream_id = (string) get_query_var('arrow_stream_id');
+if ($stream_id === '1' || $stream_id === '2') {
+    $path = 'livestreams/' . $stream_id;
+}
 if ($path === 'pages') {
     wp_safe_redirect(home_url('/pages/watch-live/'), 301);
     exit;

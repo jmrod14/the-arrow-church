@@ -1,6 +1,6 @@
 # The Arrow Church website
 
-A custom WordPress theme for The Arrow Church, with a previewable HTML homepage. The theme uses the church's own photos and content, embeds its YouTube livestream, and includes a WordPress contact form.
+A custom WordPress theme for The Arrow Church, with a previewable HTML homepage and WordPress subpages. The theme uses the church's own photos and content, includes live and archived video, an events calendar, giving through the church's existing Tithely account, and a WordPress contact form.
 
 ## Live preview
 
@@ -15,9 +15,9 @@ Open `index.html` locally to preview the design. The contact form works after th
 - Confirm the published service schedule. The location, times, phone, livestream, and social links came from the church's existing site.
 - Review the church photos and logo copied from the existing site in `assets/`.
 - The contact form saves a private Contact Message in WordPress; this path was tested on Lightsail. The instance has no outgoing mail transport, so configure SMTP or another mail service for notifications. Until then, check Contact Messages in the WordPress dashboard.
-- Events and giving still link to the existing church site. Move those records or services before retiring it.
+- The events list, calendar, recurring Sunday worship page, and calendar subscriptions are hosted here. Giving opens the church's existing secure Tithely giving page; verify that account remains active before retiring the old website.
 - Point DNS to the Lightsail static IP and configure HTTPS for the production domain before switching it.
 
 ## Git deployment
 
-`deploy/post-receive` validates PHP and synchronizes the theme to `/var/www/html/wp-content/themes/the-arrow-church`. The private SSH key stays outside Git. The theme is already active on the Lightsail WordPress instance. On this Windows workspace, use `deploy/publish.ps1 -KeyPath <private-key-path> -KnownHostsPath <known-hosts-path>` to send the current `main` commit as a Git bundle and deploy it. The instance uses static IP `184.198.12.185`. SSH access is restricted to the approved client IP in the Lightsail firewall.
+`deploy/post-receive` validates PHP, synchronizes the theme to `/var/www/html/wp-content/themes/the-arrow-church`, provisions the page routes, and refreshes WordPress permalinks. The page copy lives in `pages/data.php` and `pages/content.php`; the WordPress page records supply the URLs. The private SSH keys stay outside Git. The theme is active on Lightsail. On this Windows workspace, use `deploy/publish.ps1 -KeyPath <private-key-path> -KnownHostsPath <known-hosts-path>` to send the current `main` commit as a Git bundle and deploy it. The instance uses static IP `184.198.12.185`. SSH access is restricted to the approved client IP in the Lightsail firewall.
