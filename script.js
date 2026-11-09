@@ -12,3 +12,5 @@ nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
   toggle.setAttribute('aria-label', 'Open menu');
 }));
 document.querySelector('#year').textContent = new Date().getFullYear();
+const contactStatus = document.querySelector('.contact-status');
+if (contactStatus?.textContent === '__ARROW_CONTACT_STATUS__') contactStatus.textContent = 'The form will be active on the WordPress site.';
