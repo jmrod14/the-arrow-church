@@ -12,5 +12,11 @@ nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
   toggle.setAttribute('aria-label', 'Open menu');
 }));
 document.querySelector('#year').textContent = new Date().getFullYear();
+document.querySelector('.live-play')?.addEventListener('click', () => {
+  const frame = document.querySelector('.live-frame iframe');
+  frame.src = frame.dataset.src;
+  frame.hidden = false;
+  document.querySelector('.live-poster').hidden = true;
+});
 const contactStatus = document.querySelector('.contact-status');
 if (contactStatus?.textContent === '__ARROW_CONTACT_STATUS__') contactStatus.textContent = 'The form will be active on the WordPress site.';
