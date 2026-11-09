@@ -1,0 +1,30 @@
+:root{--ink:#111827;--cream:#fff;--lime:#f8b7a5;--green:#2963e9;--muted:#596375}
+body{background:#fff;color:#111827}
+.wrap{width:min(100% - 8vw,1400px)}
+.site-header{height:92px;border-bottom:1px solid #ffffff45;background:linear-gradient(#08101b6b,transparent)}
+.brand-logo{width:78px;height:78px;object-fit:contain;display:block}
+.site-header nav{gap:28px;font-size:12px}
+.site-header nav .nav-cta{background:#fff;color:#111827;border-radius:100px;padding:15px 22px}
+.hero{height:100vh;min-height:720px;max-height:1000px;background:#081020}
+.hero-image,:root .hero-image{background-image:url('assets/arrow-home.jpg');background-position:center 48%;filter:saturate(1.2) contrast(1.04)}
+.hero-shade{background:linear-gradient(90deg,#060d1bd9 0%,#07132b5c 56%,#07132b26),linear-gradient(0deg,#071127b3,transparent 42%)}
+.hero-content{padding-top:160px}
+.hero h1{font-size:clamp(70px,9vw,148px);line-height:.92;max-width:980px;margin:22px 0 30px;letter-spacing:-.075em}
+.hero-intro{max-width:520px;font-size:clamp(19px,1.6vw,24px);font-weight:500}
+.eyebrow-line{background:#326cff}.eyebrow.light .eyebrow-line{background:#ffb49e}
+.button,.nav-cta{border-radius:100px}
+.button-lime{background:#faad97;color:#111827}.button-lime:hover{background:#ffc3b1}
+.hero-bottom{font-size:11px}
+.intro{background:#fff}.intro h2,.section-heading h2,.visit h2{letter-spacing:-.08em}
+.intro h2 .serif,.section-heading h2 .serif,.visit h2 .serif{color:#2963e9}
+.intro-copy p,.section-heading>p,.visit-grid>div:first-child>p:not(.eyebrow){color:#535e70}
+.marquee{border-color:#dce3f0;color:#2963e9}.marquee i{color:#ff927d}
+.experience{background:#f2f6ff}.feature-photo{border-radius:18px;min-height:550px}.feature-photo img{filter:none}.photo-caption{background:#2963e9;color:#fff}.feature-list article{border-color:#c7d3ec}.feature-list article:last-child{border-color:#c7d3ec}.number{color:#2963e9}.feature-list p{color:#576478}
+.statement{background:#245fea;color:#fff;position:relative;overflow:hidden}.statement:after{content:'↗';position:absolute;right:-.02em;bottom:-.44em;font-size:clamp(300px,45vw,780px);line-height:1;color:#ffffff17;pointer-events:none}.statement .wrap{position:relative;z-index:1}.statement .outline{-webkit-text-stroke:1.5px white}.statement .button-lime{background:#fff}
+.pathways{background:#fff}.path-card{background:#ecf1ff;border-radius:18px}.dark-card{background:#172754}.green-card{background:#ffb49e}.path-card h3{letter-spacing:-.06em}
+.ministries{background:#f6f8fd}.ministry-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.ministry-grid a{position:relative;height:390px;overflow:hidden;border-radius:18px;background:#dbe5f3}.ministry-grid img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s}.ministry-grid a:hover img{transform:scale(1.055)}.ministry-grid a:after{content:'';position:absolute;inset:40% 0 0;background:linear-gradient(transparent,#09152cbb)}.ministry-grid span{position:absolute;z-index:1;bottom:26px;left:28px;right:28px;color:white;font:800 clamp(25px,3vw,42px)/1.1 Manrope,sans-serif;letter-spacing:-.06em;display:flex;justify-content:space-between;align-items:center}.ministry-grid b{font-weight:400}
+.watch{background:#101b3d}.watch-art{background:radial-gradient(circle at 50% 50%,#447eff 0 12%,#224bb5 13% 35%,#80a8ff 36% 37%,#1c3279 38% 59%,transparent 60%),linear-gradient(135deg,#243b75,#172449)}.watch-circle span{color:#ffb49e}.button-outline{border-color:#d5e3ff}
+.visit{background:#f9b49d}.visit .serif{color:#223e98}.visit-panel{background:white;border-radius:18px}.asterisk{color:#2963e9}.button-dark{background:#172754}
+footer{background:#101b3d}.footer-bottom{border-color:#54648e}.footer-brand .brand-logo{width:120px;height:120px}
+@media(max-width:900px){.site-header nav{background:#101b3d}.ministry-grid{grid-template-columns:repeat(2,1fr)}.ministry-grid a{height:340px}}
+@media(max-width:600px){.wrap{width:min(100% - 40px,1400px)}.site-header{height:78px}.brand-logo{width:65px;height:65px}.site-header nav{top:78px}.hero{min-height:700px;height:790px}.hero-image,:root .hero-image{background-position:57% center}.hero-shade{background:linear-gradient(90deg,#071027cc,#07102768),linear-gradient(0deg,#071027aa,transparent 50%)}.hero-content{padding-top:110px}.hero h1{font-size:clamp(58px,15vw,88px)}.feature-photo{min-height:360px}.ministry-grid{grid-template-columns:1fr}.ministry-grid a{height:330px}.footer-brand .brand-logo{width:90px;height:90px}}
