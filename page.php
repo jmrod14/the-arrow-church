@@ -22,6 +22,7 @@ $theme = get_template_directory_uri();
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#14213D">
+    <?php if ($arrow_page) : ?><meta name="description" content="<?php echo esc_attr($arrow_page['intro']); ?>"><?php endif; ?>
     <link rel="icon" href="<?php echo esc_url($theme . '/assets/arrow-logo.png'); ?>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

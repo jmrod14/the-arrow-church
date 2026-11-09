@@ -83,6 +83,13 @@ add_filter('query_vars', function ($vars) {
 add_filter('redirect_canonical', function ($redirect) {
     return get_query_var('arrow_stream_id') ? false : $redirect;
 });
+add_filter('pre_get_document_title', function ($title) {
+    $stream_id = (string) get_query_var('arrow_stream_id');
+    if ($stream_id === '1' || $stream_id === '2') {
+        return ($stream_id === '1' ? 'The Arrow Church Live Stream' : 'Guest Speaker') . ' – The Arrow Church';
+    }
+    return $title;
+});
 
 function arrow_upcoming_sundays($count) {
     $today = new DateTimeImmutable('today', new DateTimeZone('America/Chicago'));
