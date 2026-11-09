@@ -4,9 +4,10 @@ set -eu
 repository=/home/admin/repos/the-arrow-church.git
 target=/var/www/html/wp-content/themes/the-arrow-church
 
-while read -r oldrev newrev refname; do
-    [ "$refname" = refs/heads/main ] || continue
+deploy_main() {
+    newrev=$1
     stage=$(mktemp -d)
+    case "$stage" in /tmp/tmp.*) ;; *) echo 'Unexpected staging path' >&2; exit 1 ;; esac
     trap 'rm -rf "$stage"' EXIT HUP INT TERM
     git --git-dir="$repository" archive "$newrev" | tar -x -C "$stage"
     php -l "$stage/functions.php"
@@ -18,4 +19,13 @@ while read -r oldrev newrev refname; do
     echo "Deployed The Arrow Church theme at $newrev"
     rm -rf "$stage"
     trap - EXIT HUP INT TERM
-done
+}
+
+if [ "${1-}" = main ]; then
+    deploy_main "$(git --git-dir="$repository" rev-parse refs/heads/main)"
+else
+    while read -r oldrev newrev refname; do
+        [ "$refname" = refs/heads/main ] || continue
+        deploy_main "$newrev"
+    done
+fi
