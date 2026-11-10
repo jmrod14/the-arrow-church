@@ -72,16 +72,18 @@ function arrow_handle_contact() {
 add_action('admin_post_arrow_contact', 'arrow_handle_contact');
 add_action('admin_post_nopriv_arrow_contact', 'arrow_handle_contact');
 
-/** Keep dated event links and calendar subscriptions working after migration. */
+/** Keep dated worship links and calendar subscriptions working after migration. */
 add_action('init', function () {
     add_rewrite_rule('^events/sunday-worship/([0-9]{4}-[0-9]{2}-[0-9]{2})/?$', 'index.php?pagename=events/sunday-worship&arrow_event_date=$matches[1]', 'top');
-    add_rewrite_rule('^events/sunday-worship/([0-9]{4}-[0-9]{2}-[0-9]{2})\.ics$', 'index.php?arrow_ics_date=$matches[1]', 'top');
+    add_rewrite_rule('^events/sunday-worship/([0-9]{4}-[0-9]{2}-[0-9]{2})\.ics$', 'index.php?arrow_ics_date=$matches[1]&arrow_ics_service=sunday-worship', 'top');
+    add_rewrite_rule('^events/friday-worship/([0-9]{4}-[0-9]{2}-[0-9]{2})/?$', 'index.php?pagename=events/friday-worship&arrow_event_date=$matches[1]', 'top');
+    add_rewrite_rule('^events/friday-worship/([0-9]{4}-[0-9]{2}-[0-9]{2})\.ics$', 'index.php?arrow_ics_date=$matches[1]&arrow_ics_service=friday-worship', 'top');
     add_rewrite_rule('^events\.ics$', 'index.php?arrow_calendar_ics=1', 'top');
     add_rewrite_rule('^livestreams/([12])/?$', 'index.php?pagename=live&arrow_stream_id=$matches[1]', 'top');
     add_rewrite_rule('^collections/ministries/?$', 'index.php?pagename=ministries', 'top');
 });
 add_filter('query_vars', function ($vars) {
-    return array_merge($vars, ['arrow_event_date', 'arrow_ics_date', 'arrow_calendar_ics', 'arrow_stream_id']);
+    return array_merge($vars, ['arrow_event_date', 'arrow_ics_date', 'arrow_ics_service', 'arrow_calendar_ics', 'arrow_stream_id']);
 });
 add_filter('redirect_canonical', function ($redirect) {
     return get_query_var('arrow_stream_id') ? false : $redirect;
@@ -94,10 +96,38 @@ add_filter('pre_get_document_title', function ($title) {
     return $title;
 });
 
-function arrow_upcoming_sundays($count) {
+/** Recurring worship gatherings. Keys are the dated URL slugs. */
+function arrow_worship_services() {
+    return [
+        'sunday-worship' => [
+            'weekday' => 0,
+            'byday' => 'SU',
+            'start' => [12, 30],
+            'end' => [13, 30],
+            'name' => 'Sunday Worship',
+            'list_label' => 'SUNDAY / DOMINGO · 12:30–1:30 PM',
+            'clock' => '12:30 PM',
+            'summary' => 'Sunday Worship - The Arrow Church',
+            'description' => 'Worship with us at The Arrow Church.',
+        ],
+        'friday-worship' => [
+            'weekday' => 5,
+            'byday' => 'FR',
+            'start' => [19, 0],
+            'end' => [21, 0],
+            'name' => 'Friday Worship',
+            'list_label' => 'FRIDAY / VIERNES · 7:00–9:00 PM',
+            'clock' => '7:00 PM',
+            'summary' => 'Friday Worship - The Arrow Church',
+            'description' => 'Worship with us at The Arrow Church.',
+        ],
+    ];
+}
+
+function arrow_upcoming_weekdays($weekday, $count) {
     $today = new DateTimeImmutable('today', new DateTimeZone('America/Chicago'));
-    $days_until_sunday = (7 - (int) $today->format('w')) % 7;
-    $first = $today->modify('+' . $days_until_sunday . ' days');
+    $days_until = ($weekday - (int) $today->format('w') + 7) % 7;
+    $first = $today->modify('+' . $days_until . ' days');
     $dates = [];
     for ($i = 0; $i < $count; $i++) {
         $dates[] = $first->modify('+' . ($i * 7) . ' days');
@@ -105,18 +135,103 @@ function arrow_upcoming_sundays($count) {
     return $dates;
 }
 
-function arrow_event_date() {
+function arrow_upcoming_sundays($count) {
+    return arrow_upcoming_weekdays(0, $count);
+}
+
+/** Next Sunday and Friday gatherings, earliest date first. */
+function arrow_upcoming_gatherings($count) {
+    $gatherings = [];
+    foreach (arrow_worship_services() as $slug => $service) {
+        foreach (arrow_upcoming_weekdays($service['weekday'], $count) as $date) {
+            $gatherings[] = ['slug' => $slug, 'service' => $service, 'date' => $date];
+        }
+    }
+    usort($gatherings, function ($a, $b) {
+        return $a['date'] <=> $b['date'];
+    });
+    return $gatherings;
+}
+
+function arrow_gathering_on(DateTimeImmutable $date) {
+    $weekday = (int) $date->format('w');
+    foreach (arrow_worship_services() as $slug => $service) {
+        if ($service['weekday'] === $weekday) {
+            return ['slug' => $slug, 'service' => $service, 'date' => $date];
+        }
+    }
+    return null;
+}
+
+function arrow_event_date($slug = 'sunday-worship') {
+    $services = arrow_worship_services();
+    $service = $services[$slug] ?? $services['sunday-worship'];
     $raw = get_query_var('arrow_event_date');
     if (!$raw && isset($_GET['date'])) {
         $raw = sanitize_text_field(wp_unslash($_GET['date']));
     }
     if (is_string($raw) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $raw)) {
         $date = DateTimeImmutable::createFromFormat('!Y-m-d', $raw, new DateTimeZone('America/Chicago'));
-        if ($date && $date->format('Y-m-d') === $raw && $date->format('w') === '0') {
+        if ($date && $date->format('Y-m-d') === $raw && (int) $date->format('w') === $service['weekday']) {
             return $date;
         }
     }
-    return arrow_upcoming_sundays(1)[0];
+    return arrow_upcoming_weekdays($service['weekday'], 1)[0];
+}
+
+/** Calendar feed or one dated worship event. Null means the date does not match that service. */
+function arrow_ics_document($event_date, $service_slug, $calendar) {
+    $services = arrow_worship_services();
+    $tz = new DateTimeZone('America/Chicago');
+    $included = [];
+    if ($calendar) {
+        foreach ($services as $slug => $service) {
+            $included[] = [
+                'date' => arrow_upcoming_weekdays($service['weekday'], 1)[0],
+                'slug' => $slug,
+                'recurring' => true,
+            ];
+        }
+        usort($included, function ($a, $b) {
+            return $a['date'] <=> $b['date'];
+        });
+    } else {
+        $slug = isset($services[$service_slug]) ? $service_slug : 'sunday-worship';
+        $date = DateTimeImmutable::createFromFormat('!Y-m-d', (string) $event_date, $tz);
+        $service = $services[$slug];
+        if (!$date || $date->format('Y-m-d') !== $event_date || (int) $date->format('w') !== $service['weekday']) {
+            return null;
+        }
+        $included[] = ['date' => $date, 'slug' => $slug, 'recurring' => false];
+    }
+    $lines = [
+        'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//The Arrow Church//Events//EN',
+        'CALSCALE:GREGORIAN', 'X-WR-CALNAME:The Arrow Church',
+        'BEGIN:VTIMEZONE', 'TZID:America/Chicago',
+        'BEGIN:DAYLIGHT', 'TZOFFSETFROM:-0600', 'TZOFFSETTO:-0500', 'TZNAME:CDT', 'DTSTART:19700308T020000', 'RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU', 'END:DAYLIGHT',
+        'BEGIN:STANDARD', 'TZOFFSETFROM:-0500', 'TZOFFSETTO:-0600', 'TZNAME:CST', 'DTSTART:19701101T020000', 'RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU', 'END:STANDARD',
+        'END:VTIMEZONE',
+    ];
+    foreach ($included as $item) {
+        $service = $services[$item['slug']];
+        $date = $item['date'];
+        $start = $date->setTime($service['start'][0], $service['start'][1]);
+        $end = $date->setTime($service['end'][0], $service['end'][1]);
+        $lines[] = 'BEGIN:VEVENT';
+        $lines[] = 'UID:' . $item['slug'] . '-' . $date->format('Ymd') . '@thearrowchurch.org';
+        $lines[] = 'DTSTAMP:' . gmdate('Ymd\THis\Z');
+        $lines[] = 'DTSTART;TZID=America/Chicago:' . $start->format('Ymd\THis');
+        $lines[] = 'DTEND;TZID=America/Chicago:' . $end->format('Ymd\THis');
+        $lines[] = 'SUMMARY:' . $service['summary'];
+        $lines[] = 'DESCRIPTION:' . $service['description'];
+        $lines[] = 'LOCATION:2931 Lucerne Dr\, Janesville\, WI 53545';
+        if ($item['recurring']) {
+            $lines[] = 'RRULE:FREQ=WEEKLY;BYDAY=' . $service['byday'];
+        }
+        $lines[] = 'END:VEVENT';
+    }
+    $lines[] = 'END:VCALENDAR';
+    return implode("\r\n", $lines) . "\r\n";
 }
 
 add_action('template_redirect', function () {
@@ -125,35 +240,13 @@ add_action('template_redirect', function () {
     if (!$event_date && !$calendar) {
         return;
     }
-    $tz = new DateTimeZone('America/Chicago');
-    $date = $calendar ? arrow_upcoming_sundays(1)[0] : DateTimeImmutable::createFromFormat('!Y-m-d', $event_date, $tz);
-    if (!$date || $date->format('w') !== '0' || (!$calendar && $date->format('Y-m-d') !== $event_date)) {
+    $document = arrow_ics_document($event_date, (string) get_query_var('arrow_ics_service'), (bool) $calendar);
+    if ($document === null) {
         status_header(404);
         exit;
     }
-    $start = $date->setTime(12, 30);
-    $end = $date->setTime(13, 30);
-    $lines = [
-        'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//The Arrow Church//Events//EN',
-        'CALSCALE:GREGORIAN', 'X-WR-CALNAME:The Arrow Church',
-        'BEGIN:VTIMEZONE', 'TZID:America/Chicago',
-        'BEGIN:DAYLIGHT', 'TZOFFSETFROM:-0600', 'TZOFFSETTO:-0500', 'TZNAME:CDT', 'DTSTART:19700308T020000', 'RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU', 'END:DAYLIGHT',
-        'BEGIN:STANDARD', 'TZOFFSETFROM:-0500', 'TZOFFSETTO:-0600', 'TZNAME:CST', 'DTSTART:19701101T020000', 'RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU', 'END:STANDARD',
-        'END:VTIMEZONE', 'BEGIN:VEVENT',
-        'UID:sunday-worship-' . $date->format('Ymd') . '@thearrowchurch.org',
-        'DTSTAMP:' . gmdate('Ymd\THis\Z'),
-        'DTSTART;TZID=America/Chicago:' . $start->format('Ymd\THis'),
-        'DTEND;TZID=America/Chicago:' . $end->format('Ymd\THis'),
-        'SUMMARY:Sunday Worship - The Arrow Church',
-        'DESCRIPTION:Worship with us at The Arrow Church.',
-        'LOCATION:2931 Lucerne Dr\, Janesville\, WI 53545',
-    ];
-    if ($calendar) {
-        $lines[] = 'RRULE:FREQ=WEEKLY;BYDAY=SU';
-    }
-    $lines = array_merge($lines, ['END:VEVENT', 'END:VCALENDAR']);
     header('Content-Type: text/calendar; charset=utf-8');
     header('Content-Disposition: attachment; filename="the-arrow-church-events.ics"');
-    echo implode("\r\n", $lines) . "\r\n";
+    echo $document;
     exit;
 });

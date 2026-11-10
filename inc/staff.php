@@ -1,5 +1,5 @@
 <?php
-/** Staff details shown on the team page. Unconfirmed details are visibly marked as samples. */
+/** Staff names and roles shown on the team page. Saved WordPress values override these defaults. */
 
 function arrow_staff_defaults() {
     return [

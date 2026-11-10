@@ -33,6 +33,9 @@ if (isset($_GET['contact'])) {
     }
 }
 $markup = str_replace('__ARROW_CONTACT_STATUS__', esc_html($message), $markup);
+// All in One SEO prints the title, description, and canonical URL through wp_head().
+$markup = preg_replace('/\s*<title\b[^>]*>.*?<\/title>/is', '', $markup, 1);
+$markup = preg_replace('/\s*<meta\s+name=(["\'])description\1[^>]*>/i', '', $markup, 1);
 ob_start();
 wp_head();
 $head = ob_get_clean();
