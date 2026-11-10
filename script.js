@@ -4,17 +4,28 @@ const header = document.querySelector('.header');
 const updateHeader = () => header?.classList.toggle('scrolled', window.scrollY > 24);
 updateHeader();
 window.addEventListener('scroll', updateHeader, { passive: true });
-toggle.addEventListener('click', () => {
-  const open = toggle.getAttribute('aria-expanded') !== 'true';
+const setMenuOpen = (open) => {
   toggle.setAttribute('aria-expanded', String(open));
   toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
   nav.classList.toggle('open', open);
+};
+toggle.addEventListener('click', () => setMenuOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+nav.querySelector('.menu-close')?.addEventListener('click', () => {
+  setMenuOpen(false);
+  toggle.focus();
 });
 nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
-  nav.classList.remove('open');
-  toggle.setAttribute('aria-expanded', 'false');
-  toggle.setAttribute('aria-label', 'Open menu');
+  setMenuOpen(false);
 }));
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && nav.classList.contains('open')) {
+    setMenuOpen(false);
+    toggle.focus();
+  }
+});
+document.addEventListener('pointerdown', event => {
+  if (nav.classList.contains('open') && !header.contains(event.target)) setMenuOpen(false);
+});
 document.querySelector('#year').textContent = new Date().getFullYear();
 document.querySelector('.live-play')?.addEventListener('click', () => {
   const frame = document.querySelector('.live-frame iframe');

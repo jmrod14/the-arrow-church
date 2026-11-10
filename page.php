@@ -40,6 +40,7 @@ $theme = get_template_directory_uri();
         <a class="logo" href="<?php echo esc_url(home_url('/')); ?>" aria-label="The Arrow Church home"><img src="<?php echo esc_url(arrow_photo_url('arrow-logo.png')); ?>" alt="The Arrow Church"></a>
         <button class="menu-toggle" type="button" aria-controls="main-nav" aria-expanded="false" aria-label="Open menu"><span></span><span></span></button>
         <nav id="main-nav" aria-label="Main navigation">
+            <button class="menu-close" type="button">CLOSE MENU <span aria-hidden="true">&times;</span></button>
             <a href="<?php echo esc_url(home_url('/about/')); ?>">ABOUT</a>
             <a href="<?php echo esc_url(home_url('/ministries/')); ?>">MINISTRIES</a>
             <a href="<?php echo esc_url(home_url('/events/')); ?>">EVENTS</a>
@@ -75,7 +76,7 @@ $theme = get_template_directory_uri();
     <div><p>FOLLOW ALONG</p><a href="https://www.instagram.com/the.arrow.church/">Instagram <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="https://www.youtube.com/@thearrowchurch">YouTube <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="https://www.facebook.com/profile.php?id=100081125124651">Facebook <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a></div>
     <div><p>EXPLORE</p><a href="<?php echo esc_url(home_url('/about/')); ?>">About <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="<?php echo esc_url(home_url('/about/our-team/')); ?>">Staff <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="<?php echo esc_url(home_url('/ministries/')); ?>">Ministries <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="<?php echo esc_url(home_url('/events/')); ?>">Events <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="<?php echo esc_url(home_url('/pages/watch-live/')); ?>">Watch Live <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="<?php echo esc_url(home_url('/contact/')); ?>">Contact <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="<?php echo esc_url(home_url('/give/')); ?>">Give <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a></div>
     <div><p>VISIT</p><a href="https://maps.app.goo.gl/62ZYeJGdf3Qw7sJn7">2931 Lucerne Dr, Janesville, WI 53545 <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="tel:16087744837">(608) 774-4837 <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a></div>
-</div><div class="footer-bottom"><span>© <span id="year"></span> THE ARROW CHURCH BILINGUAL MINISTRY</span><a href="#top">BACK TO TOP <span class="arrow-icon arrow-up" aria-hidden="true"></span></a></div></div></footer>
-<script src="<?php echo esc_url($theme . '/script.js'); ?>"></script>
+</div><div class="footer-bottom"><span>© <span id="year"></span> THE ARROW CHURCH BILINGUAL MINISTRY</span><span>DEVELOPED BY <a href="https://computerconceptswi.com/">COMPUTERCONCEPTSWI.COM</a></span><a href="#top">BACK TO TOP <span class="arrow-icon arrow-up" aria-hidden="true"></span></a></div></div></footer>
+<script src="<?php echo esc_url($theme . '/script.js?ver=' . filemtime(get_template_directory() . '/script.js')); ?>"></script>
 <?php wp_footer(); ?>
 </body></html>
