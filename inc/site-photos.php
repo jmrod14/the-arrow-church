@@ -194,12 +194,22 @@ add_action('admin_post_arrow_save_photos', function () {
                 if (isset($staff[$key]) || !is_array($entry)) {
                     continue;
                 }
-                $extra_name = trim((string) ($entry['name'] ?? ''));
+                $extra_name = sanitize_text_field($entry['name'] ?? '');
+                $extra_title = sanitize_text_field($entry['title'] ?? '');
                 $extra_key = arrow_staff_name_key($extra_name);
                 if ($extra_name === '' || isset($known_names[$extra_key])) {
                     continue;
                 }
-                $staff[$key] = $entry;
+                $extra = [
+                    'name' => wp_html_excerpt($extra_name, 100, ''),
+                    'title' => wp_html_excerpt($extra_title, 100, ''),
+                    'confirmed' => !empty($entry['confirmed']),
+                ];
+                $extra_image = arrow_staff_image_file($entry['image'] ?? '', '');
+                if ($extra_image !== '') {
+                    $extra['image'] = $extra_image;
+                }
+                $staff[$key] = $extra;
                 $known_names[$extra_key] = true;
             }
         }
