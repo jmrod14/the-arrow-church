@@ -51,3 +51,7 @@ foreach ($routes as $path => $title) {
     $ids[$path] = $id;
     echo 'Created ' . $path . PHP_EOL;
 }
+
+if (function_exists('arrow_sync_staff_profiles')) {
+    arrow_sync_staff_profiles();
+}

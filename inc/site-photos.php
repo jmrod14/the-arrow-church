@@ -173,11 +173,35 @@ add_action('admin_post_arrow_save_photos', function () {
             $value = isset($submitted_staff[$number]) && is_array($submitted_staff[$number]) ? $submitted_staff[$number] : [];
             $name = sanitize_text_field($value['name'] ?? '');
             $title = sanitize_text_field($value['title'] ?? '');
-            $staff[$number] = [
+            $entry = [
                 'name' => $name !== '' ? wp_html_excerpt($name, 100, '') : $default['name'],
                 'title' => $title !== '' ? wp_html_excerpt($title, 100, '') : $default['title'],
                 'confirmed' => !empty($value['confirmed']),
             ];
+            $kept_image = arrow_staff_image_file($value['image'] ?? '', '');
+            if ($kept_image !== '') {
+                $entry['image'] = $kept_image;
+            }
+            $staff[$number] = $entry;
+        }
+        $existing_staff = get_option('arrow_staff_profiles', []);
+        if (is_array($existing_staff)) {
+            $known_names = [];
+            foreach ($staff as $entry) {
+                $known_names[arrow_staff_name_key($entry['name'])] = true;
+            }
+            foreach ($existing_staff as $key => $entry) {
+                if (isset($staff[$key]) || !is_array($entry)) {
+                    continue;
+                }
+                $extra_name = trim((string) ($entry['name'] ?? ''));
+                $extra_key = arrow_staff_name_key($extra_name);
+                if ($extra_name === '' || isset($known_names[$extra_key])) {
+                    continue;
+                }
+                $staff[$key] = $entry;
+                $known_names[$extra_key] = true;
+            }
         }
         update_option('arrow_staff_profiles', $staff, false);
     }
