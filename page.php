@@ -77,6 +77,5 @@ $theme = get_template_directory_uri();
     <div><p>VISIT</p><a href="https://maps.app.goo.gl/62ZYeJGdf3Qw7sJn7">2931 Lucerne Dr, Janesville, WI 53545 <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="tel:16087744837">(608) 774-4837 <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a></div>
 </div><div class="footer-bottom"><span>© <span id="year"></span> THE ARROW CHURCH BILINGUAL MINISTRY</span><a href="#top">BACK TO TOP <span class="arrow-icon arrow-up" aria-hidden="true"></span></a></div></div></footer>
 <script src="<?php echo esc_url($theme . '/script.js'); ?>"></script>
-<?php if ($path === 'about/our-team') : ?><script src="<?php echo esc_url($theme . '/staff.js?ver=' . filemtime(get_template_directory() . '/staff.js')); ?>" defer></script><?php endif; ?>
 <?php wp_footer(); ?>
 </body></html>

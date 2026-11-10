@@ -28,7 +28,7 @@ if ($path === 'about') : ?>
 <section class="staff-showcase" aria-label="Staff and leaders">
     <div class="container">
         <div class="staff-showcase-heading"><div><p class="overline"><span class="overline-mark" aria-hidden="true"></span> OUR PEOPLE</p><h2>Get to know<br><em>the team.</em></h2></div><p>Names and roles marked “Sample profile” are placeholders until confirmed.</p></div>
-        <div class="staff-track" id="staff-track" role="list" aria-label="Staff profiles" tabindex="0">
+        <div class="staff-grid" role="list" aria-label="Staff profiles">
             <?php foreach (arrow_staff_profiles() as $number => $profile) : ?>
                 <article class="staff-card" role="listitem">
                     <img src="<?php echo $asset($profile['image']); ?>" style="<?php echo esc_attr(arrow_photo_style($profile['image'])); ?>" alt="<?php echo esc_attr($profile['confirmed'] ? $profile['name'] : 'Portrait for sample staff profile ' . $number); ?>" loading="<?php echo $number <= 2 ? 'eager' : 'lazy'; ?>">
@@ -40,7 +40,6 @@ if ($path === 'about') : ?>
                 </article>
             <?php endforeach; ?>
         </div>
-        <div class="staff-controls"><div><button class="staff-prev" type="button" aria-label="Previous staff profiles"><span class="arrow-icon arrow-left" aria-hidden="true"></span></button><button class="staff-next" type="button" aria-label="Next staff profiles"><span class="arrow-icon arrow-right" aria-hidden="true"></span></button></div><p class="staff-counter" aria-live="polite">01 / 08</p></div>
     </div>
 </section>
 <?php elseif ($path === 'ministries') : ?>
