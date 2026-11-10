@@ -16,8 +16,8 @@ foreach (['arrow-home.jpg', 'arrow-worship.jpg', 'arrow-kids.jpg', 'arrow-youth.
 }
 $hero_url = esc_url(arrow_photo_url('arrow-home.jpg', 'hero:home'));
 $markup = str_replace('class="hero-photo"', 'class="hero-photo" style="background-image:url(&quot;' . $hero_url . '&quot;);' . esc_attr(arrow_photo_style('arrow-home.jpg', 'hero:home', true)) . '"', $markup);
-$live_url = esc_url(arrow_photo_url('arrow-worship.jpg'));
-$live_display = arrow_photo_display('arrow-worship.jpg');
+$live_url = esc_url(arrow_photo_url('arrow-home.jpg'));
+$live_display = arrow_photo_display('arrow-home.jpg');
 $markup = str_replace('class="live-poster"', 'class="live-poster" style="background-image:linear-gradient(90deg,rgba(0,0,0,.78),rgba(0,0,0,.22)),url(&quot;' . $live_url . '&quot;);background-size:100% 100%,' . esc_attr($live_display['fit']) . ';background-position:center,' . esc_attr($live_display['x'] . '% ' . $live_display['y'] . '%') . '"', $markup);
 $markup = str_replace('href="styles.css"', 'href="' . $theme_url . '/styles.css?ver=' . filemtime(get_template_directory() . '/styles.css') . '"', $markup);
 $markup = str_replace('src="script.js"', 'src="' . $theme_url . '/script.js?ver=' . filemtime(get_template_directory() . '/script.js') . '"', $markup);
