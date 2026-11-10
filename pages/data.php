@@ -8,9 +8,9 @@ return [
         'image' => 'arrow-home.jpg',
     ],
     'about/our-team' => [
-        'title' => 'Meet the people behind the welcome.',
-        'label' => 'OUR TEAM',
-        'intro' => 'Get to know the people who help make The Arrow Church a place to belong.',
+        'title' => 'Staff & Leaders',
+        'label' => 'OUR STAFF',
+        'intro' => 'Meet Itzel and Samuel Torres and the people who serve The Arrow Church.',
         'image' => 'arrow-worship.jpg',
     ],
     'ministries' => [

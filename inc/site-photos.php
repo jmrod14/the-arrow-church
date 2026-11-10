@@ -14,8 +14,14 @@ function arrow_photo_fields() {
         'asset:arrow-home.jpg' => ['Shared photos', 'Church gathering', 'arrow-home.jpg'],
         'asset:arrow-logo.png' => ['Brand', 'Church logo', 'arrow-logo.png'],
     ];
+    foreach (arrow_staff_defaults() as $number => $profile) {
+        $fields['asset:' . $profile['image']] = ['Staff portraits', 'Staff profile ' . $number, $profile['image']];
+    }
     $pages = require get_template_directory() . '/pages/data.php';
     foreach ($pages as $path => $page) {
+        if ($path === 'about/our-team') {
+            continue;
+        }
         $fields['hero:' . $path] = ['Page banners', $page['title'] . ' (' . $path . ')', $page['image']];
     }
     return $fields;
@@ -72,7 +78,7 @@ add_action('admin_enqueue_scripts', function ($hook) {
     }
     wp_enqueue_media();
     wp_enqueue_script('arrow-site-photos', get_template_directory_uri() . '/inc/site-photos.js', [], '1.1', true);
-    wp_enqueue_style('arrow-site-photos', get_template_directory_uri() . '/inc/site-photos.css', [], '1.1');
+    wp_enqueue_style('arrow-site-photos', get_template_directory_uri() . '/inc/site-photos.css', [], '1.2');
 });
 
 function arrow_render_photo_admin() {
@@ -83,11 +89,12 @@ function arrow_render_photo_admin() {
     if (!is_array($saved)) {
         $saved = [];
     }
+    $staff = arrow_staff_profiles();
     $group = '';
     ?>
     <div class="wrap arrow-photo-admin">
         <h1>Site Photos</h1>
-        <p>Choose a photo, adjust how it fits, then save. <strong>Show whole image</strong> keeps every edge visible. <strong>Fill frame</strong> looks fuller; use the position controls to choose which part stays in view.</p>
+        <p>Choose a photo, adjust how it fits, then save. <strong>Show whole image</strong> keeps every edge visible. <strong>Fill frame</strong> looks fuller; use the position controls to choose which part stays in view. Staff names and roles can also be changed below.</p>
         <?php if (isset($_GET['updated']) && $_GET['updated'] === '1') : ?><div class="notice notice-success is-dismissible"><p>Site photos saved.</p></div><?php endif; ?>
         <form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post">
             <input type="hidden" name="action" value="arrow_save_photos">
@@ -110,6 +117,13 @@ function arrow_render_photo_admin() {
                     <img src="<?php echo esc_url($photo); ?>" alt="Preview of <?php echo esc_attr($field[1]); ?>" style="<?php echo esc_attr(arrow_photo_style($field[2], $key)); ?>">
                     <input type="hidden" name="photos[<?php echo esc_attr($key); ?>]" value="<?php echo esc_attr($id); ?>">
                     <div class="arrow-photo-actions"><button type="button" class="button arrow-choose-photo">Choose photo</button><button type="button" class="button-link arrow-reset-photo" <?php disabled(!$id); ?>>Use original</button></div>
+                    <?php if (preg_match('/^asset:staff-([0-9]{2})\.jpg$/', $key, $match) && isset($staff[(int) $match[1]])) :
+                        $number = (int) $match[1];
+                        $profile = $staff[$number]; ?>
+                        <label class="arrow-staff-field">Name <input type="text" name="staff[<?php echo esc_attr($number); ?>][name]" value="<?php echo esc_attr($profile['name']); ?>" maxlength="100" required></label>
+                        <label class="arrow-staff-field">Role <input type="text" name="staff[<?php echo esc_attr($number); ?>][title]" value="<?php echo esc_attr($profile['title']); ?>" maxlength="100" required></label>
+                        <label class="arrow-staff-confirm"><input type="checkbox" name="staff[<?php echo esc_attr($number); ?>][confirmed]" value="1" <?php checked($profile['confirmed']); ?>> Name and role confirmed</label>
+                    <?php endif; ?>
                     <label class="arrow-fit-label">Display
                         <select name="display[<?php echo esc_attr($key); ?>][fit]" class="arrow-fit">
                             <option value="cover" <?php selected($display['fit'], 'cover'); ?>>Fill frame</option>
@@ -152,6 +166,21 @@ add_action('admin_post_arrow_save_photos', function () {
         ];
     }
     update_option('arrow_photo_display', $display, false);
+    if (isset($_POST['staff']) && is_array($_POST['staff'])) {
+        $submitted_staff = wp_unslash($_POST['staff']);
+        $staff = [];
+        foreach (arrow_staff_defaults() as $number => $default) {
+            $value = isset($submitted_staff[$number]) && is_array($submitted_staff[$number]) ? $submitted_staff[$number] : [];
+            $name = sanitize_text_field($value['name'] ?? '');
+            $title = sanitize_text_field($value['title'] ?? '');
+            $staff[$number] = [
+                'name' => $name !== '' ? wp_html_excerpt($name, 100, '') : $default['name'],
+                'title' => $title !== '' ? wp_html_excerpt($title, 100, '') : $default['title'],
+                'confirmed' => !empty($value['confirmed']),
+            ];
+        }
+        update_option('arrow_staff_profiles', $staff, false);
+    }
     wp_safe_redirect(admin_url('admin.php?page=arrow-site-photos&updated=1'));
     exit;
 });

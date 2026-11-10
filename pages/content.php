@@ -18,7 +18,31 @@ if ($path === 'about') : ?>
     <article><span>03</span><h3>Enviar / Send</h3><p>Equipar y enviar discípulos para extender el Reino de Dios, evangelizar y transformar generaciones.</p><p>Equipping and sending disciples to extend God's Kingdom, evangelize, and transform generations.</p></article>
 </div></div></section>
 <?php elseif ($path === 'about/our-team') : ?>
-<section class="section"><div class="container"><p class="overline"><span class="overline-mark" aria-hidden="true"></span> PEOPLE OF THE ARROW</p><h2>Meet our <em>team.</em></h2><div class="team-grid"><article class="team-card team-feature"><img src="<?php echo $asset('arrow-pastors.jpg'); ?>" style="<?php echo esc_attr(arrow_photo_style('arrow-pastors.jpg')); ?>" alt="Pastors Samuel and Itzel Torres" loading="lazy"><div><span>FOUNDING PASTORS</span><h3>Samuel &amp; Itzel Torres</h3><p>Building a family united in Christ across languages and backgrounds.</p></div></article><article class="team-card"><img src="<?php echo $asset('arrow-team-rossy.jpg'); ?>" style="<?php echo esc_attr(arrow_photo_style('arrow-team-rossy.jpg')); ?>" alt="Rossy Marte speaking at The Arrow Church" loading="lazy"><div><span>EVANGELISTA</span><h3>Rossy Marte</h3><p>Serving The Arrow Church family.</p></div></article></div></div></section>
+<section class="staff-hero">
+    <div class="container staff-hero-inner">
+        <p class="overline light"><span class="overline-mark" aria-hidden="true"></span> THE PEOPLE OF THE ARROW</p>
+        <h1>Meet our staff<br><em>&amp; leaders.</em></h1>
+        <div class="staff-hero-bottom"><strong>We’re here to serve you.</strong><p>Meet the people who help make The Arrow Church a place to belong. We’re glad to walk alongside you and your family.</p></div>
+    </div>
+</section>
+<section class="staff-showcase" aria-label="Staff and leaders">
+    <div class="container">
+        <div class="staff-showcase-heading"><div><p class="overline"><span class="overline-mark" aria-hidden="true"></span> OUR PEOPLE</p><h2>Get to know<br><em>the team.</em></h2></div><p>Names and roles marked “Sample profile” are placeholders until confirmed.</p></div>
+        <div class="staff-track" id="staff-track" role="list" aria-label="Staff profiles" tabindex="0">
+            <?php foreach (arrow_staff_profiles() as $number => $profile) : ?>
+                <article class="staff-card" role="listitem">
+                    <img src="<?php echo $asset($profile['image']); ?>" style="<?php echo esc_attr(arrow_photo_style($profile['image'])); ?>" alt="<?php echo esc_attr($profile['confirmed'] ? $profile['name'] : 'Portrait for sample staff profile ' . $number); ?>" loading="<?php echo $number <= 2 ? 'eager' : 'lazy'; ?>">
+                    <div class="staff-card-caption">
+                        <span class="staff-role"><?php echo esc_html($profile['title']); ?></span>
+                        <h3><?php echo esc_html($profile['name']); ?></h3>
+                        <?php if (!$profile['confirmed']) : ?><span class="staff-sample">Sample profile</span><?php endif; ?>
+                    </div>
+                </article>
+            <?php endforeach; ?>
+        </div>
+        <div class="staff-controls"><div><button class="staff-prev" type="button" aria-label="Previous staff profiles"><span class="arrow-icon arrow-left" aria-hidden="true"></span></button><button class="staff-next" type="button" aria-label="Next staff profiles"><span class="arrow-icon arrow-right" aria-hidden="true"></span></button></div><p class="staff-counter" aria-live="polite">01 / 08</p></div>
+    </div>
+</section>
 <?php elseif ($path === 'ministries') : ?>
 <section class="section"><div class="container"><p class="overline"><span class="overline-mark" aria-hidden="true"></span> ALL ARE WELCOME</p><h2>There’s room<br>to <em>belong.</em></h2><div class="sub-card-grid">
     <?php foreach ([['childrens-ministry','KIDS','Children ages 4 to 11.','arrow-kids.jpg'],['youth-ministry','YOUTH','Teenagers ages 10 to 18.','arrow-youth.jpg'],['young-adults','YOUNG ADULTS','Men and women ages 18 and up.','arrow-young-adults.jpg'],['prayer-oracion','PRAYER / ORACIÓN','A church that prays stands firm.','arrow-prayer.jpg']] as $item) : ?>

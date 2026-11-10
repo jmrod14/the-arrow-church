@@ -6,7 +6,7 @@ if (get_option('blogname') === 'My Blog') {
 }
 $routes = [
     'about' => 'About',
-    'about/our-team' => 'Our Team',
+    'about/our-team' => 'Staff & Leaders',
     'ministries' => 'Ministries',
     'ministries/childrens-ministry' => 'Children’s Ministry',
     'ministries/youth-ministry' => 'Youth Ministry',
@@ -27,6 +27,9 @@ $ids = [];
 foreach ($routes as $path => $title) {
     $existing = get_page_by_path($path, OBJECT, 'page');
     if ($existing) {
+        if ($path === 'about/our-team' && $existing->post_title !== $title) {
+            wp_update_post(['ID' => $existing->ID, 'post_title' => $title]);
+        }
         $ids[$path] = $existing->ID;
         continue;
     }

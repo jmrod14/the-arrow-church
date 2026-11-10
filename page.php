@@ -29,6 +29,7 @@ $theme = get_template_directory_uri();
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="<?php echo esc_url($theme . '/styles.css?ver=' . filemtime(get_template_directory() . '/styles.css')); ?>">
     <link rel="stylesheet" href="<?php echo esc_url($theme . '/pages.css?ver=' . filemtime(get_template_directory() . '/pages.css')); ?>">
+    <?php if ($path === 'about/our-team') : ?><link rel="stylesheet" href="<?php echo esc_url($theme . '/staff.css?ver=' . filemtime(get_template_directory() . '/staff.css')); ?>"><?php endif; ?>
     <?php wp_head(); ?>
 </head>
 <body <?php body_class('arrow-subpage'); ?>>
@@ -42,7 +43,7 @@ $theme = get_template_directory_uri();
             <a href="<?php echo esc_url(home_url('/about/')); ?>">ABOUT</a>
             <a href="<?php echo esc_url(home_url('/ministries/')); ?>">MINISTRIES</a>
             <a href="<?php echo esc_url(home_url('/events/')); ?>">EVENTS</a>
-            <a href="<?php echo esc_url(home_url('/live/')); ?>">SERMONS</a>
+            <a href="<?php echo esc_url(home_url('/about/our-team/')); ?>">STAFF</a>
             <a href="<?php echo esc_url(home_url('/pages/watch-live/')); ?>">WATCH LIVE</a>
             <a href="<?php echo esc_url(home_url('/contact/')); ?>">CONTACT</a>
             <a href="<?php echo esc_url(home_url('/give/')); ?>">GIVE</a>
@@ -51,7 +52,9 @@ $theme = get_template_directory_uri();
     </div>
 </header>
 <main id="main">
-    <?php if ($arrow_page) : ?>
+    <?php if ($path === 'about/our-team') : ?>
+        <?php require get_template_directory() . '/pages/content.php'; ?>
+    <?php elseif ($arrow_page) : ?>
         <?php $position = arrow_photo_display($arrow_page['image'], 'hero:' . $path); ?>
         <section class="subhero" style="--subhero-image:url('<?php echo esc_url(arrow_photo_url($arrow_page['image'], 'hero:' . $path)); ?>');--subhero-fit:<?php echo esc_attr($position['fit']); ?>;--subhero-position:<?php echo esc_attr($position['x'] . '% ' . $position['y'] . '%'); ?>">
             <div class="container subhero-inner">
@@ -70,9 +73,10 @@ $theme = get_template_directory_uri();
 <footer class="footer"><div class="container"><div class="footer-main">
     <img src="<?php echo esc_url(arrow_photo_url('arrow-logo.png')); ?>" alt="The Arrow Church">
     <div><p>FOLLOW ALONG</p><a href="https://www.instagram.com/the.arrow.church/">Instagram <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="https://www.youtube.com/@thearrowchurch">YouTube <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="https://www.facebook.com/profile.php?id=100081125124651">Facebook <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a></div>
-    <div><p>EXPLORE</p><a href="<?php echo esc_url(home_url('/about/')); ?>">About <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="<?php echo esc_url(home_url('/about/our-team/')); ?>">Our Team <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="<?php echo esc_url(home_url('/ministries/')); ?>">Ministries <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="<?php echo esc_url(home_url('/events/')); ?>">Events <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="<?php echo esc_url(home_url('/live/')); ?>">Sermons <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="<?php echo esc_url(home_url('/pages/watch-live/')); ?>">Watch Live <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="<?php echo esc_url(home_url('/contact/')); ?>">Contact <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="<?php echo esc_url(home_url('/give/')); ?>">Give <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a></div>
+    <div><p>EXPLORE</p><a href="<?php echo esc_url(home_url('/about/')); ?>">About <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="<?php echo esc_url(home_url('/about/our-team/')); ?>">Staff <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="<?php echo esc_url(home_url('/ministries/')); ?>">Ministries <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="<?php echo esc_url(home_url('/events/')); ?>">Events <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="<?php echo esc_url(home_url('/pages/watch-live/')); ?>">Watch Live <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="<?php echo esc_url(home_url('/contact/')); ?>">Contact <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="<?php echo esc_url(home_url('/give/')); ?>">Give <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a></div>
     <div><p>VISIT</p><a href="https://maps.app.goo.gl/62ZYeJGdf3Qw7sJn7">2931 Lucerne Dr, Janesville, WI 53545 <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="tel:16087744837">(608) 774-4837 <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a></div>
 </div><div class="footer-bottom"><span>© <span id="year"></span> THE ARROW CHURCH BILINGUAL MINISTRY</span><a href="#top">BACK TO TOP <span class="arrow-icon arrow-up" aria-hidden="true"></span></a></div></div></footer>
 <script src="<?php echo esc_url($theme . '/script.js'); ?>"></script>
+<?php if ($path === 'about/our-team') : ?><script src="<?php echo esc_url($theme . '/staff.js?ver=' . filemtime(get_template_directory() . '/staff.js')); ?>" defer></script><?php endif; ?>
 <?php wp_footer(); ?>
 </body></html>

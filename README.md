@@ -6,6 +6,8 @@ A custom WordPress theme for The Arrow Church, with a previewable HTML homepage 
 
 Sign in at `/wp-admin/`, open **Site Photos** in the left menu, choose replacements from the Media Library, adjust how each image fits, and click **Save site photos**. **Show whole image** keeps the entire photo visible; **Fill frame** fills the shape and lets you move the visible portion with the horizontal and vertical sliders. The homepage hero, shared photos, logo, and individual page banners can be changed without editing code. **Use original** restores a photo shipped with the theme. Uploads and display settings remain in WordPress when the theme is deployed again from Git. Elementor is not required for photo changes; the page layouts are still maintained in the theme.
 
+The **Staff portraits** group on that screen also has name, role, and **Name and role confirmed** fields. The first profile is Itzel and Samuel Torres, Lead Pastors. The other seven default names and roles are sample text and visibly marked as such on the public team page until confirmed. The main navigation links to this page in place of Sermons; archived messages and the live service remain accessible through Watch Live.
+
 ## Live preview
 
 The Lightsail preview is at https://arrow.184.198.12.185.sslip.io/. The production domain still serves the existing church website. The instance has a static IP and an automatically renewing HTTPS certificate for the preview hostname. Change the WordPress URLs and issue a certificate for `thearrowchurch.org` when DNS is ready to move.

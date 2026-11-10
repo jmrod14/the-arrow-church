@@ -12,6 +12,7 @@ deploy_main() {
     git --git-dir="$repository" archive "$newrev" | tar -x -C "$stage"
     php -l "$stage/functions.php"
     php -l "$stage/inc/site-photos.php"
+    php -l "$stage/inc/staff.php"
     php -l "$stage/front-page.php"
     php -l "$stage/index.php"
     php -l "$stage/page.php"

@@ -6,6 +6,7 @@ add_action('after_setup_theme', function () {
 });
 
 require_once get_template_directory() . '/inc/site-photos.php';
+require_once get_template_directory() . '/inc/staff.php';
 
 add_action('init', function () {
     register_post_type('arrow_message', [
