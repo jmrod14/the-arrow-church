@@ -44,6 +44,34 @@ function arrow_photo_url($file, $slot = '') {
     return get_template_directory_uri() . '/assets/' . $file;
 }
 
+function arrow_asset_dimensions($file) {
+    static $cache = [];
+    $file = basename((string) $file);
+    if (isset($cache[$file])) {
+        return $cache[$file];
+    }
+    $path = get_template_directory() . '/assets/' . $file;
+    $info = is_readable($path) ? @getimagesize($path) : false;
+    $cache[$file] = $info ? [(int) $info[0], (int) $info[1]] : [0, 0];
+    return $cache[$file];
+}
+
+/** width/height plus loading hints. $loading '' leaves the default eager fetch. */
+function arrow_img_attrs($file, $loading = 'lazy', $priority = '') {
+    [$width, $height] = arrow_asset_dimensions($file);
+    $attrs = ' decoding="async"';
+    if ($width && $height) {
+        $attrs .= ' width="' . $width . '" height="' . $height . '"';
+    }
+    if ($loading !== '') {
+        $attrs .= ' loading="' . esc_attr($loading) . '"';
+    }
+    if ($priority !== '') {
+        $attrs .= ' fetchpriority="' . esc_attr($priority) . '"';
+    }
+    return $attrs;
+}
+
 function arrow_photo_display($file, $slot = '') {
     $settings = get_option('arrow_photo_display', []);
     if (!is_array($settings)) {

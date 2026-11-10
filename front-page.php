@@ -7,6 +7,8 @@ if ($markup === false) {
     exit('The homepage template is unavailable.');
 }
 $markup = str_replace('assets/', $theme_url . '/assets/', $markup);
+$hero_url = esc_url(arrow_photo_url('arrow-home.jpg', 'hero:home'));
+$markup = str_replace('href="' . $theme_url . '/assets/arrow-home.jpg"', 'href="' . $hero_url . '"', $markup);
 $markup = str_replace('<a class="logo" href="/"', '<a class="logo" href="' . esc_url(home_url('/')) . '"', $markup);
 foreach (['arrow-home.jpg', 'arrow-worship.jpg', 'arrow-kids.jpg', 'arrow-youth.jpg', 'arrow-young-adults.jpg', 'arrow-prayer.jpg', 'arrow-pastors.jpg', 'arrow-team-rossy.jpg', 'arrow-logo.png'] as $file) {
     $old_url = $theme_url . '/assets/' . $file;
@@ -14,7 +16,6 @@ foreach (['arrow-home.jpg', 'arrow-worship.jpg', 'arrow-kids.jpg', 'arrow-youth.
     $markup = str_replace('src="' . $old_url . '"', 'src="' . $new_url . '" style="' . esc_attr(arrow_photo_style($file)) . '"', $markup);
     $markup = str_replace('href="' . $old_url . '"', 'href="' . $new_url . '"', $markup);
 }
-$hero_url = esc_url(arrow_photo_url('arrow-home.jpg', 'hero:home'));
 $markup = str_replace('class="hero-photo"', 'class="hero-photo" style="background-image:url(&quot;' . $hero_url . '&quot;);' . esc_attr(arrow_photo_style('arrow-home.jpg', 'hero:home', true)) . '"', $markup);
 $live_url = esc_url(arrow_photo_url('arrow-home.jpg'));
 $live_display = arrow_photo_display('arrow-home.jpg');
