@@ -15,6 +15,7 @@ $routes = [
     'events' => 'Events',
     'events/calendar' => 'Calendar',
     'events/sunday-worship' => 'Sunday Worship',
+    'events/friday-worship' => 'Friday Worship',
     'live' => 'Sermons',
     'livestreams' => 'Past Live Streams',
     'pages' => 'Pages',

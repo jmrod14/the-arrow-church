@@ -52,13 +52,19 @@ return [
     'events/calendar' => [
         'title' => 'Make plans to be here.',
         'label' => 'CHURCH CALENDAR',
-        'intro' => 'See upcoming Sunday worship gatherings at The Arrow Church.',
+        'intro' => 'See upcoming Sunday and Friday worship gatherings at The Arrow Church.',
         'image' => 'arrow-home.jpg',
     ],
     'events/sunday-worship' => [
         'title' => 'Sunday worship.',
         'label' => 'YOU’RE INVITED',
         'intro' => 'Join us at 12:30 PM Central for worship and community.',
+        'image' => 'arrow-home.jpg',
+    ],
+    'events/friday-worship' => [
+        'title' => 'Friday worship.',
+        'label' => 'YOU’RE INVITED',
+        'intro' => 'Join us at 7:00 PM Central for worship and community.',
         'image' => 'arrow-home.jpg',
     ],
     'live' => [
