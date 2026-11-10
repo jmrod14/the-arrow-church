@@ -46,7 +46,7 @@ $theme = get_template_directory_uri();
             <a href="<?php echo esc_url(home_url('/pages/watch-live/')); ?>">WATCH LIVE</a>
             <a href="<?php echo esc_url(home_url('/contact/')); ?>">CONTACT</a>
             <a href="<?php echo esc_url(home_url('/give/')); ?>">GIVE</a>
-            <a class="nav-button" href="<?php echo esc_url(home_url('/#visit')); ?>">PLAN A VISIT <span>↗</span></a>
+            <a class="nav-button" href="<?php echo esc_url(home_url('/#visit')); ?>">PLAN A VISIT <span>&#x2197;&#xFE0E;</span></a>
         </nav>
     </div>
 </header>
@@ -55,7 +55,7 @@ $theme = get_template_directory_uri();
         <?php $position = arrow_photo_display($arrow_page['image'], 'hero:' . $path); ?>
         <section class="subhero" style="--subhero-image:url('<?php echo esc_url(arrow_photo_url($arrow_page['image'], 'hero:' . $path)); ?>');--subhero-fit:<?php echo esc_attr($position['fit']); ?>;--subhero-position:<?php echo esc_attr($position['x'] . '% ' . $position['y'] . '%'); ?>">
             <div class="container subhero-inner">
-                <p class="overline light"><span class="overline-mark">✳</span> <?php echo esc_html($arrow_page['label']); ?></p>
+                <p class="overline light"><span class="overline-mark" aria-hidden="true"></span> <?php echo esc_html($arrow_page['label']); ?></p>
                 <h1><?php echo esc_html($arrow_page['title']); ?></h1>
                 <p><?php echo esc_html($arrow_page['intro']); ?></p>
             </div>
@@ -63,16 +63,16 @@ $theme = get_template_directory_uri();
         <?php require get_template_directory() . '/pages/content.php'; ?>
     <?php else : ?>
         <?php $position = arrow_photo_display('arrow-home.jpg'); ?>
-        <section class="subhero" style="--subhero-image:url('<?php echo esc_url(arrow_photo_url('arrow-home.jpg')); ?>');--subhero-fit:<?php echo esc_attr($position['fit']); ?>;--subhero-position:<?php echo esc_attr($position['x'] . '% ' . $position['y'] . '%'); ?>"><div class="container subhero-inner"><p class="overline light"><span class="overline-mark">✳</span> THE ARROW CHURCH</p><h1><?php the_title(); ?></h1></div></section>
+        <section class="subhero" style="--subhero-image:url('<?php echo esc_url(arrow_photo_url('arrow-home.jpg')); ?>');--subhero-fit:<?php echo esc_attr($position['fit']); ?>;--subhero-position:<?php echo esc_attr($position['x'] . '% ' . $position['y'] . '%'); ?>"><div class="container subhero-inner"><p class="overline light"><span class="overline-mark" aria-hidden="true"></span> THE ARROW CHURCH</p><h1><?php the_title(); ?></h1></div></section>
         <section class="section"><div class="container article-body"><?php while (have_posts()) : the_post(); the_content(); endwhile; ?></div></section>
     <?php endif; ?>
 </main>
 <footer class="footer"><div class="container"><div class="footer-main">
     <img src="<?php echo esc_url(arrow_photo_url('arrow-logo.png')); ?>" alt="The Arrow Church">
-    <div><p>FOLLOW ALONG</p><a href="https://www.instagram.com/the.arrow.church/">Instagram ↗</a><a href="https://www.youtube.com/@thearrowchurch">YouTube ↗</a><a href="https://www.facebook.com/profile.php?id=100081125124651">Facebook ↗</a></div>
-    <div><p>EXPLORE</p><a href="<?php echo esc_url(home_url('/about/')); ?>">About ↗</a><a href="<?php echo esc_url(home_url('/about/our-team/')); ?>">Our Team ↗</a><a href="<?php echo esc_url(home_url('/ministries/')); ?>">Ministries ↗</a><a href="<?php echo esc_url(home_url('/events/')); ?>">Events ↗</a><a href="<?php echo esc_url(home_url('/live/')); ?>">Sermons ↗</a><a href="<?php echo esc_url(home_url('/pages/watch-live/')); ?>">Watch Live ↗</a><a href="<?php echo esc_url(home_url('/contact/')); ?>">Contact ↗</a><a href="<?php echo esc_url(home_url('/give/')); ?>">Give ↗</a></div>
-    <div><p>VISIT</p><a href="https://maps.app.goo.gl/62ZYeJGdf3Qw7sJn7">2931 Lucerne Dr, Janesville, WI 53545 ↗</a><a href="tel:16087744837">(608) 774-4837 ↗</a></div>
-</div><div class="footer-bottom"><span>© <span id="year"></span> THE ARROW CHURCH BILINGUAL MINISTRY</span><a href="#top">BACK TO TOP ↑</a></div></div></footer>
+    <div><p>FOLLOW ALONG</p><a href="https://www.instagram.com/the.arrow.church/">Instagram &#x2197;&#xFE0E;</a><a href="https://www.youtube.com/@thearrowchurch">YouTube &#x2197;&#xFE0E;</a><a href="https://www.facebook.com/profile.php?id=100081125124651">Facebook &#x2197;&#xFE0E;</a></div>
+    <div><p>EXPLORE</p><a href="<?php echo esc_url(home_url('/about/')); ?>">About &#x2197;&#xFE0E;</a><a href="<?php echo esc_url(home_url('/about/our-team/')); ?>">Our Team &#x2197;&#xFE0E;</a><a href="<?php echo esc_url(home_url('/ministries/')); ?>">Ministries &#x2197;&#xFE0E;</a><a href="<?php echo esc_url(home_url('/events/')); ?>">Events &#x2197;&#xFE0E;</a><a href="<?php echo esc_url(home_url('/live/')); ?>">Sermons &#x2197;&#xFE0E;</a><a href="<?php echo esc_url(home_url('/pages/watch-live/')); ?>">Watch Live &#x2197;&#xFE0E;</a><a href="<?php echo esc_url(home_url('/contact/')); ?>">Contact &#x2197;&#xFE0E;</a><a href="<?php echo esc_url(home_url('/give/')); ?>">Give &#x2197;&#xFE0E;</a></div>
+    <div><p>VISIT</p><a href="https://maps.app.goo.gl/62ZYeJGdf3Qw7sJn7">2931 Lucerne Dr, Janesville, WI 53545 &#x2197;&#xFE0E;</a><a href="tel:16087744837">(608) 774-4837 &#x2197;&#xFE0E;</a></div>
+</div><div class="footer-bottom"><span>© <span id="year"></span> THE ARROW CHURCH BILINGUAL MINISTRY</span><a href="#top">BACK TO TOP &#x2191;&#xFE0E;</a></div></div></footer>
 <script src="<?php echo esc_url($theme . '/script.js'); ?>"></script>
 <?php wp_footer(); ?>
 </body></html>
