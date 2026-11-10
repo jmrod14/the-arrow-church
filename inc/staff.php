@@ -3,8 +3,8 @@
 
 function arrow_additional_staff() {
     return [
-        ['name' => 'Luis & Kelly Morales', 'title' => 'Ministry Leaders', 'image' => 'staff-09.jpg'],
-        ['name' => 'German & Judith', 'title' => 'Ministry Leaders', 'image' => 'staff-10.jpg'],
+        ['name' => 'Luis & Kellie Morales', 'title' => 'Ministry Leaders', 'image' => 'staff-09.jpg'],
+        ['name' => 'German & Yudith', 'title' => 'Ministry Leaders', 'image' => 'staff-10.jpg'],
     ];
 }
 
@@ -103,9 +103,17 @@ function arrow_sync_staff_profiles() {
         $saved = [];
     }
     $known = [];
+    $images = [];
     foreach ($saved as $profile) {
-        if (is_array($profile) && isset($profile['name'])) {
+        if (!is_array($profile)) {
+            continue;
+        }
+        if (isset($profile['name'])) {
             $known[arrow_staff_name_key($profile['name'])] = true;
+        }
+        $image = arrow_staff_image_file($profile['image'] ?? '', '');
+        if ($image !== '') {
+            $images[$image] = true;
         }
     }
     $next = 9;
@@ -115,9 +123,13 @@ function arrow_sync_staff_profiles() {
         }
     }
     $changed = false;
+    $slot = 9;
     foreach (arrow_additional_staff() as $profile) {
         $name_key = arrow_staff_name_key($profile['name']);
-        if ($name_key === '' || isset($known[$name_key])) {
+        $image = arrow_staff_image_file($profile['image'] ?? '', '');
+        $slot_saved = array_key_exists($slot, $saved);
+        if ($name_key === '' || isset($known[$name_key]) || $slot_saved || ($image !== '' && isset($images[$image]))) {
+            $slot++;
             continue;
         }
         while (isset($saved[$next])) {
@@ -130,7 +142,11 @@ function arrow_sync_staff_profiles() {
             'confirmed' => true,
         ];
         $known[$name_key] = true;
+        if ($image !== '') {
+            $images[$image] = true;
+        }
         $next++;
+        $slot++;
         $changed = true;
     }
     if ($changed) {
