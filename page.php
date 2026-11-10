@@ -46,7 +46,7 @@ $theme = get_template_directory_uri();
             <a href="<?php echo esc_url(home_url('/pages/watch-live/')); ?>">WATCH LIVE</a>
             <a href="<?php echo esc_url(home_url('/contact/')); ?>">CONTACT</a>
             <a href="<?php echo esc_url(home_url('/give/')); ?>">GIVE</a>
-            <a class="nav-button" href="<?php echo esc_url(home_url('/#visit')); ?>">PLAN A VISIT <span>&#x2197;&#xFE0E;</span></a>
+            <a class="nav-button" href="<?php echo esc_url(home_url('/#visit')); ?>">PLAN A VISIT <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a>
         </nav>
     </div>
 </header>
@@ -69,10 +69,10 @@ $theme = get_template_directory_uri();
 </main>
 <footer class="footer"><div class="container"><div class="footer-main">
     <img src="<?php echo esc_url(arrow_photo_url('arrow-logo.png')); ?>" alt="The Arrow Church">
-    <div><p>FOLLOW ALONG</p><a href="https://www.instagram.com/the.arrow.church/">Instagram &#x2197;&#xFE0E;</a><a href="https://www.youtube.com/@thearrowchurch">YouTube &#x2197;&#xFE0E;</a><a href="https://www.facebook.com/profile.php?id=100081125124651">Facebook &#x2197;&#xFE0E;</a></div>
-    <div><p>EXPLORE</p><a href="<?php echo esc_url(home_url('/about/')); ?>">About &#x2197;&#xFE0E;</a><a href="<?php echo esc_url(home_url('/about/our-team/')); ?>">Our Team &#x2197;&#xFE0E;</a><a href="<?php echo esc_url(home_url('/ministries/')); ?>">Ministries &#x2197;&#xFE0E;</a><a href="<?php echo esc_url(home_url('/events/')); ?>">Events &#x2197;&#xFE0E;</a><a href="<?php echo esc_url(home_url('/live/')); ?>">Sermons &#x2197;&#xFE0E;</a><a href="<?php echo esc_url(home_url('/pages/watch-live/')); ?>">Watch Live &#x2197;&#xFE0E;</a><a href="<?php echo esc_url(home_url('/contact/')); ?>">Contact &#x2197;&#xFE0E;</a><a href="<?php echo esc_url(home_url('/give/')); ?>">Give &#x2197;&#xFE0E;</a></div>
-    <div><p>VISIT</p><a href="https://maps.app.goo.gl/62ZYeJGdf3Qw7sJn7">2931 Lucerne Dr, Janesville, WI 53545 &#x2197;&#xFE0E;</a><a href="tel:16087744837">(608) 774-4837 &#x2197;&#xFE0E;</a></div>
-</div><div class="footer-bottom"><span>© <span id="year"></span> THE ARROW CHURCH BILINGUAL MINISTRY</span><a href="#top">BACK TO TOP &#x2191;&#xFE0E;</a></div></div></footer>
+    <div><p>FOLLOW ALONG</p><a href="https://www.instagram.com/the.arrow.church/">Instagram <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="https://www.youtube.com/@thearrowchurch">YouTube <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="https://www.facebook.com/profile.php?id=100081125124651">Facebook <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a></div>
+    <div><p>EXPLORE</p><a href="<?php echo esc_url(home_url('/about/')); ?>">About <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="<?php echo esc_url(home_url('/about/our-team/')); ?>">Our Team <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="<?php echo esc_url(home_url('/ministries/')); ?>">Ministries <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="<?php echo esc_url(home_url('/events/')); ?>">Events <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="<?php echo esc_url(home_url('/live/')); ?>">Sermons <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="<?php echo esc_url(home_url('/pages/watch-live/')); ?>">Watch Live <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="<?php echo esc_url(home_url('/contact/')); ?>">Contact <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="<?php echo esc_url(home_url('/give/')); ?>">Give <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a></div>
+    <div><p>VISIT</p><a href="https://maps.app.goo.gl/62ZYeJGdf3Qw7sJn7">2931 Lucerne Dr, Janesville, WI 53545 <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="tel:16087744837">(608) 774-4837 <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a></div>
+</div><div class="footer-bottom"><span>© <span id="year"></span> THE ARROW CHURCH BILINGUAL MINISTRY</span><a href="#top">BACK TO TOP <span class="arrow-icon arrow-up" aria-hidden="true"></span></a></div></div></footer>
 <script src="<?php echo esc_url($theme . '/script.js'); ?>"></script>
 <?php wp_footer(); ?>
 </body></html>
