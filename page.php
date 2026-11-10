@@ -23,6 +23,7 @@ $theme = get_template_directory_uri();
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#14213D">
     <link rel="icon" href="<?php echo esc_url(arrow_photo_url('arrow-logo.png')); ?>">
+    <?php if ($arrow_page && $path !== 'about/our-team') : ?><link rel="preload" as="image" href="<?php echo esc_url(arrow_photo_url($arrow_page['image'], 'hero:' . $path)); ?>" fetchpriority="high"><?php endif; ?>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -36,7 +37,7 @@ $theme = get_template_directory_uri();
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="header" id="top">
     <div class="container header-inner">
-        <a class="logo" href="<?php echo esc_url(home_url('/')); ?>" aria-label="The Arrow Church home"><img src="<?php echo esc_url(arrow_photo_url('arrow-logo.png')); ?>" alt="The Arrow Church"></a>
+        <a class="logo" href="<?php echo esc_url(home_url('/')); ?>" aria-label="The Arrow Church home"><img src="<?php echo esc_url(arrow_photo_url('arrow-logo.png')); ?>" alt="The Arrow Church"<?php echo arrow_img_attrs('arrow-logo.png', ''); ?>></a>
         <button class="menu-toggle" type="button" aria-controls="main-nav" aria-expanded="false" aria-label="Open menu"><span></span><span></span></button>
         <nav id="main-nav" aria-label="Main navigation">
             <button class="menu-close" type="button">CLOSE MENU <span aria-hidden="true">&times;</span></button>
@@ -71,7 +72,7 @@ $theme = get_template_directory_uri();
     <?php endif; ?>
 </main>
 <footer class="footer"><div class="container"><div class="footer-main">
-    <img src="<?php echo esc_url(arrow_photo_url('arrow-logo.png')); ?>" alt="The Arrow Church">
+    <img src="<?php echo esc_url(arrow_photo_url('arrow-logo.png')); ?>" alt="The Arrow Church"<?php echo arrow_img_attrs('arrow-logo.png'); ?>>
     <div><p>FOLLOW ALONG</p><a href="https://www.instagram.com/the.arrow.church/">Instagram <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="https://www.youtube.com/@thearrowchurch">YouTube <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="https://www.facebook.com/profile.php?id=100081125124651">Facebook <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a></div>
     <div><p>EXPLORE</p><a href="<?php echo esc_url(home_url('/about/')); ?>">About <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="<?php echo esc_url(home_url('/about/our-team/')); ?>">Staff <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="<?php echo esc_url(home_url('/ministries/')); ?>">Ministries <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="<?php echo esc_url(home_url('/events/')); ?>">Events <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="<?php echo esc_url(home_url('/pages/watch-live/')); ?>">Watch Live <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="<?php echo esc_url(home_url('/contact/')); ?>">Contact <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="<?php echo esc_url(home_url('/give/')); ?>">Give <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a></div>
     <div><p>VISIT</p><a href="https://maps.app.goo.gl/62ZYeJGdf3Qw7sJn7">2931 Lucerne Dr, Janesville, WI 53545 <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a><a href="tel:16087744837">(608) 774-4837 <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a></div>
