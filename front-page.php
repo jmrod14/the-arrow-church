@@ -18,7 +18,7 @@ $markup = str_replace('class="hero-photo"', 'class="hero-photo" style="backgroun
 $live_url = esc_url(arrow_photo_url('arrow-worship.jpg'));
 $live_display = arrow_photo_display('arrow-worship.jpg');
 $markup = str_replace('class="live-poster"', 'class="live-poster" style="background-image:linear-gradient(90deg,rgba(0,0,0,.78),rgba(0,0,0,.22)),url(&quot;' . $live_url . '&quot;);background-size:100% 100%,' . esc_attr($live_display['fit']) . ';background-position:center,' . esc_attr($live_display['x'] . '% ' . $live_display['y'] . '%') . '"', $markup);
-$markup = str_replace('href="styles.css"', 'href="' . $theme_url . '/styles.css"', $markup);
+$markup = str_replace('href="styles.css"', 'href="' . $theme_url . '/styles.css?ver=' . filemtime(get_template_directory() . '/styles.css') . '"', $markup);
 $markup = str_replace('src="script.js"', 'src="' . $theme_url . '/script.js"', $markup);
 $markup = str_replace('action="/wp-admin/admin-post.php"', 'action="' . esc_url(admin_url('admin-post.php')) . '"', $markup);
 $markup = str_replace('__ARROW_NONCE__', esc_attr(wp_create_nonce('arrow_contact')), $markup);

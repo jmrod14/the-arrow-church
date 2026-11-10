@@ -27,8 +27,8 @@ $theme = get_template_directory_uri();
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="<?php echo esc_url($theme . '/styles.css'); ?>">
-    <link rel="stylesheet" href="<?php echo esc_url($theme . '/pages.css'); ?>">
+    <link rel="stylesheet" href="<?php echo esc_url($theme . '/styles.css?ver=' . filemtime(get_template_directory() . '/styles.css')); ?>">
+    <link rel="stylesheet" href="<?php echo esc_url($theme . '/pages.css?ver=' . filemtime(get_template_directory() . '/pages.css')); ?>">
     <?php wp_head(); ?>
 </head>
 <body <?php body_class('arrow-subpage'); ?>>
