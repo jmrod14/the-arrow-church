@@ -9,7 +9,7 @@ $asset = static function ($file) {
 
 if ($path === 'about') : ?>
 <section class="section"><div class="container split-story">
-    <div><p class="overline"><span class="overline-mark" aria-hidden="true"></span> MEET OUR PASTORS</p><h2>Samuel &amp;<br><em>Itzel Torres.</em></h2><p>Pastors Samuel and Itzel Torres founded The Arrow Church in Janesville to unite people through faith, whatever their language, culture, or background. Their heart is to build a family united in Christ, where lives are transformed and everyone belongs.</p><p>Los pastores Samuel e Itzel Torres fundaron The Arrow Church en Janesville para unir a las personas por medio de la fe, sin importar su idioma, cultura o procedencia. Su corazón es formar una familia unida en Cristo, donde las vidas son transformadas y todos pertenecen.</p><a class="inline-link" href="<?php echo $url('about/our-team'); ?>">MEET OUR TEAM <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a></div>
+    <div><p class="overline"><span class="overline-mark" aria-hidden="true"></span> MEET OUR PASTORS</p><h2 class="notranslate" translate="no">Samuel &amp;<br><em>Itzel Torres.</em></h2><p>Pastors <span class="notranslate" translate="no">Samuel and Itzel Torres</span> founded The Arrow Church in Janesville to unite people through faith, whatever their language, culture, or background. Their heart is to build a family united in Christ, where lives are transformed and everyone belongs.</p><p>Los pastores <span class="notranslate" translate="no">Samuel e Itzel Torres</span> fundaron The Arrow Church en Janesville para unir a las personas por medio de la fe, sin importar su idioma, cultura o procedencia. Su corazón es formar una familia unida en Cristo, donde las vidas son transformadas y todos pertenecen.</p><a class="inline-link" href="<?php echo $url('about/our-team'); ?>">MEET OUR TEAM <span class="arrow-icon arrow-up-right" aria-hidden="true"></span></a></div>
     <img src="<?php echo $asset('arrow-pastors.jpg'); ?>" style="<?php echo esc_attr(arrow_photo_style('arrow-pastors.jpg')); ?>" alt="Pastors Samuel and Itzel Torres"<?php echo arrow_img_attrs('arrow-pastors.jpg'); ?>>
 </div></section>
 <section class="section section-soft"><div class="container"><p class="overline"><span class="overline-mark" aria-hidden="true"></span> OUR VISION / NUESTRA VISIÓN</p><h2>Conectar. Formar.<br><em>Enviar.</em></h2><p class="section-lead">Connect. Form. Send.</p><div class="value-grid">
@@ -34,7 +34,7 @@ if ($path === 'about') : ?>
                     <img src="<?php echo $asset($profile['image']); ?>" style="<?php echo esc_attr(arrow_photo_style($profile['image'])); ?>" alt="<?php echo esc_attr('Portrait of ' . $profile['name'] . ', The Arrow Church'); ?>" <?php echo arrow_img_attrs($profile['image'], $number <= 2 ? 'eager' : 'lazy'); ?>>
                     <div class="staff-card-caption">
                         <span class="staff-role"><?php echo esc_html($profile['title']); ?></span>
-                        <h3><?php echo esc_html($profile['name']); ?></h3>
+                        <h3 class="notranslate" translate="no"><?php echo esc_html($profile['name']); ?></h3>
                     </div>
                 </article>
             <?php endforeach; ?>
