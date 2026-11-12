@@ -129,12 +129,12 @@ def staff_card():
     card = Image.new('RGB', (WIDTH, HEIGHT), (16, 23, 36))
     draw = ImageDraw.Draw(card)
     files = [ASSETS / f'staff-{number:02d}.jpg' for number in range(1, 11)]
-    size, gap = 112, 12
+    size, gap = 168, 16
     columns = 5
     grid_w = columns * size + (columns - 1) * gap
     grid_h = 2 * size + gap
     origin_x = (WIDTH - grid_w) // 2
-    origin_y = 78
+    origin_y = 48
     for index, path in enumerate(files):
         column = index % columns
         row = index // columns

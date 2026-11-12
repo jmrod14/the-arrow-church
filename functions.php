@@ -298,6 +298,7 @@ function arrow_share_facebook_tags($tags) {
     }
     $image = arrow_share_image();
     $tags['og:image'] = $image['url'];
+    $tags['og:image:secure_url'] = $image['url'];
     $tags['og:image:width'] = $image['width'];
     $tags['og:image:height'] = $image['height'];
     $tags['og:image:alt'] = $image['alt'];
@@ -325,6 +326,7 @@ function arrow_share_meta_tags() {
     $image = arrow_share_image();
     $tags = [
         'og:image' => $image['url'],
+        'og:image:secure_url' => $image['url'],
         'og:image:width' => $image['width'],
         'og:image:height' => $image['height'],
         'og:image:alt' => $image['alt'],
