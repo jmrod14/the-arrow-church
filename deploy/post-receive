@@ -21,7 +21,7 @@ deploy_main() {
     php -l "$stage/deploy/sync-pages.php"
     [ ! -L "$target" ] || { echo 'Refusing symlinked theme target' >&2; exit 1; }
     mkdir -p "$target"
-    rsync -a --delete --exclude '/deploy/' --exclude '/README.md' "$stage/" "$target/"
+    rsync -a --delete --exclude '/deploy/' --exclude '/README.md' --exclude '/tools/' "$stage/" "$target/"
     chmod -R a+rX "$target"
     wp eval-file "$stage/deploy/sync-pages.php" --path=/var/www/html
     wp rewrite structure '/%postname%/' --path=/var/www/html
