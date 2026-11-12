@@ -250,3 +250,96 @@ add_action('template_redirect', function () {
     echo $document;
     exit;
 });
+
+/** Share cards. Other public pages use the home image. */
+function arrow_share_cards() {
+    return [
+        'home' => [
+            'file' => 'share-home.jpg',
+            'alt' => 'The Arrow Church in Janesville. Sundays 12:30 PM and Fridays 7:00 PM.',
+        ],
+        'about/our-team' => [
+            'file' => 'share-staff.jpg',
+            'alt' => 'Staff and leaders of The Arrow Church.',
+        ],
+        'pages/watch-live' => [
+            'file' => 'share-watch.jpg',
+            'alt' => 'Watch The Arrow Church live.',
+        ],
+        'contact' => [
+            'file' => 'share-contact.jpg',
+            'alt' => 'Contact The Arrow Church in Janesville, Wisconsin.',
+        ],
+    ];
+}
+
+function arrow_share_image() {
+    $cards = arrow_share_cards();
+    $key = 'home';
+    if (!is_front_page()) {
+        $path = trim((string) get_page_uri(get_queried_object_id()), '/');
+        if (isset($cards[$path])) {
+            $key = $path;
+        }
+    }
+    $card = $cards[$key];
+    return [
+        'url' => set_url_scheme(get_template_directory_uri() . '/assets/' . $card['file'], 'https'),
+        'width' => '1200',
+        'height' => '630',
+        'alt' => $card['alt'],
+        'type' => 'image/jpeg',
+    ];
+}
+
+function arrow_share_facebook_tags($tags) {
+    if (!is_array($tags)) {
+        $tags = [];
+    }
+    $image = arrow_share_image();
+    $tags['og:image'] = $image['url'];
+    $tags['og:image:width'] = $image['width'];
+    $tags['og:image:height'] = $image['height'];
+    $tags['og:image:alt'] = $image['alt'];
+    $tags['og:image:type'] = $image['type'];
+    return $tags;
+}
+add_filter('aioseo_facebook_tags', 'arrow_share_facebook_tags');
+
+function arrow_share_twitter_tags($tags) {
+    if (!is_array($tags)) {
+        $tags = [];
+    }
+    $image = arrow_share_image();
+    $tags['twitter:card'] = 'summary_large_image';
+    $tags['twitter:image'] = $image['url'];
+    return $tags;
+}
+add_filter('aioseo_twitter_tags', 'arrow_share_twitter_tags');
+
+/** Used only when All in One SEO is not already printing the social tags. */
+function arrow_share_meta_tags() {
+    if (defined('AIOSEO_VERSION') || function_exists('aioseo')) {
+        return;
+    }
+    $image = arrow_share_image();
+    $tags = [
+        'og:image' => $image['url'],
+        'og:image:width' => $image['width'],
+        'og:image:height' => $image['height'],
+        'og:image:alt' => $image['alt'],
+        'og:image:type' => $image['type'],
+        'twitter:card' => 'summary_large_image',
+        'twitter:image' => $image['url'],
+    ];
+    foreach ($tags as $name => $content) {
+        $attribute = str_starts_with($name, 'twitter:') ? 'name' : 'property';
+        printf(
+            "<meta %s=\"%s\" content=\"%s\" />\n",
+            esc_attr($attribute),
+            esc_attr($name),
+            esc_attr($content)
+        );
+    }
+}
+add_action('wp_head', 'arrow_share_meta_tags', 5);
