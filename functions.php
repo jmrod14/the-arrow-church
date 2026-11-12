@@ -276,7 +276,7 @@ function arrow_share_cards() {
 function arrow_share_image() {
     $cards = arrow_share_cards();
     $key = 'home';
-    if (!is_front_page()) {
+    if (!is_front_page() && is_page()) {
         $path = trim((string) get_page_uri(get_queried_object_id()), '/');
         if (isset($cards[$path])) {
             $key = $path;
