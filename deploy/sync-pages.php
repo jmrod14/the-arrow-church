@@ -55,3 +55,6 @@ foreach ($routes as $path => $title) {
 if (function_exists('arrow_sync_staff_profiles')) {
     arrow_sync_staff_profiles();
 }
+if (function_exists('arrow_exclude_events_from_cache_enabler')) {
+    arrow_exclude_events_from_cache_enabler();
+}

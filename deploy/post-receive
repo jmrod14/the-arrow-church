@@ -13,6 +13,8 @@ deploy_main() {
     php -l "$stage/functions.php"
     php -l "$stage/inc/site-photos.php"
     php -l "$stage/inc/staff.php"
+    php -l "$stage/inc/ics.php"
+    php -l "$stage/inc/events.php"
     php -l "$stage/front-page.php"
     php -l "$stage/index.php"
     php -l "$stage/page.php"
