@@ -21,7 +21,7 @@ Open `index.html` locally to preview the design. The contact form works after th
 - Confirm the published service schedule. The location, times, phone, livestream, and social links came from the church's existing site.
 - Review the church photos and logo copied from the existing site in `assets/`.
 - The contact form saves a private Contact Message in WordPress; this path was tested on Lightsail. The instance has no outgoing mail transport, so configure SMTP or another mail service for notifications. Until then, check Contact Messages in the WordPress dashboard.
-- The events list, calendar, Sunday and Friday worship pages, and calendar subscriptions are hosted here. Giving opens the church's existing secure Tithely giving page; verify that account remains active before retiring the old website.
+- The events list and calendar read the public Google Calendar `thearrowchurchcalendar@gmail.com`. Add weekly services in Google Calendar; they are not hardcoded on `/events/`. Deploy adds `/events/` to the Cache Enabler exclusion so the 15-minute feed cache is not stuck behind the 10-hour page cache. Dated worship links still resolve. Giving opens the church's existing secure Tithely giving page; verify that account remains active before retiring the old website.
 - Point DNS at the Lightsail instance and configure HTTPS for `thearrowchurch.org` before switching the WordPress Site Address.
 
 ## Git deployment
