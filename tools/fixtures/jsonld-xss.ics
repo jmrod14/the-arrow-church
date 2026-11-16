@@ -1,0 +1,11 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//The Arrow Church//Test//EN
+X-WR-TIMEZONE:America/Chicago
+BEGIN:VEVENT
+UID:jsonld-xss@test
+DTSTART;TZID=America/Chicago:20261210T150000
+DTEND;TZID=America/Chicago:20261210T160000
+SUMMARY:x</script><img src=x onerror=alert(1)>
+END:VEVENT
+END:VCALENDAR

@@ -294,6 +294,15 @@ expect(str_contains($blank, 'No upcoming events right now. Check back soon.') &&
 $unsafe = arrow_ics_occurrences("BEGIN:VCALENDAR\nBEGIN:VEVENT\nUID:xss@test\nDTSTART;TZID=America/Chicago:20261210T150000\nDTEND;TZID=America/Chicago:20261210T160000\nSUMMARY:<script>alert(1)</script>\nDESCRIPTION:See https://example.com/safe.\nLOCATION:<img src=x>\nEND:VEVENT\nEND:VCALENDAR\n", chicago('2026-12-10 00:00:00'), chicago('2026-12-11 00:00:00'), 2);
 $unsafe_html = render_events('events', ['view' => 'list'], "BEGIN:VCALENDAR\nBEGIN:VEVENT\nUID:xss@test\nDTSTART;TZID=America/Chicago:20261210T150000\nDTEND;TZID=America/Chicago:20261210T160000\nSUMMARY:<script>alert(1)</script>\nDESCRIPTION:See https://example.com/safe.\nLOCATION:Hall <b>A</b>\nEND:VEVENT\nEND:VCALENDAR\n");
 expect(!str_contains($unsafe_html, '<script>alert') && str_contains($unsafe_html, '&lt;script&gt;'), 'event titles are escaped');
+$jsonld_xss = file_get_contents(__DIR__ . '/fixtures/jsonld-xss.ics');
+$jsonld_html = render_events('events', ['view' => 'list'], $jsonld_xss);
+$jsonld_open = '<script type="application/ld+json">';
+$jsonld_start = strpos($jsonld_html, $jsonld_open);
+$jsonld_rest = $jsonld_start === false ? '' : substr($jsonld_html, $jsonld_start + strlen($jsonld_open));
+$jsonld_close = strpos($jsonld_rest, '</script>');
+$jsonld_payload = $jsonld_close === false ? '' : substr($jsonld_rest, 0, $jsonld_close);
+$jsonld_after = $jsonld_close === false ? $jsonld_rest : substr($jsonld_rest, $jsonld_close + strlen('</script>'));
+expect($jsonld_start !== false && $jsonld_close !== false && !str_contains($jsonld_payload, '</script>') && !str_contains($jsonld_after, '</script>'), 'JSON-LD contains no literal </script> before its closing tag');
 expect(!str_contains($unsafe_html, '<b>A</b>'), 'locations are escaped');
 expect(count($unsafe) === 1, 'unsafe fixture still parses as one event');
 
